@@ -1,13 +1,17 @@
 import os
+import sys
+
+# Determine paths and guarantee root is in Python module search path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from backend.config import Config
 from backend.services.growth_engine import GrowthEngine
 from backend.services.supabase_service import SupabaseService
-
-# Determine paths
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 
 app = Flask(__name__, static_folder=FRONTEND_DIR)
 CORS(app)
