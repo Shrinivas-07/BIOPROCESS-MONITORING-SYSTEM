@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bioprocess Research Studio | AICTE IDEA Lab</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Chart.js 4.x CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="p-4 md:p-6 lg:p-8">
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <div class="max-w-7xl mx-auto space-y-6 relative z-10">
+
+    <!-- ============================================================== -->
+    <!-- HEADER & TOP NAVIGATION -->
+    <!-- ============================================================== -->
+    <header class="glass-panel p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center space-x-4">
+        <a href="/" class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform" title="Back to Overview">
+          🧪
+        </a>
+        <div>
+          <div class="flex items-center space-x-3">
+            <h1 class="text-xl md:text-2xl font-extrabold text-white tracking-tight">
+              BIOPROCESS RESEARCH STUDIO
+            </h1>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+              LIVE LABORATORY
+            </span>
+          </div>
+          <p class="text-xs md:text-sm text-gray-400">
+            Automated Ingestion (ESP32) • Supabase Cloud PostgreSQL • Growth Prediction & Phase Decision Engine
+          </p>
+        </div>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <!-- Return to Landing -->
+        <a href="/" class="px-3 py-1.5 rounded-lg bg-gray-800/80 border border-white/10 hover:border-white/30 text-xs font-semibold text-gray-300 hover:text-white transition-colors flex items-center space-x-1.5">
+          <span>🏠</span>
+          <span>Home</span>
+        </a>
+
+        <!-- Cloud Status Pill -->
+        <div id="cloudStatusPill" class="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-2 bg-purple-500/10 border border-purple-500/30 text-purple-400">
+          <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-purple-400 live-pulse"></span>
+          <span id="cloudStatusText">INITIALIZING...</span>
+        </div>
+
+        <!-- Start Reaction Button -->
+        <button id="openStartBatchModalBtn" class="px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center space-x-1.5 transition-all shadow-md shadow-emerald-500/10">
+          <span>▶</span>
+          <span>Start Reaction</span>
+        </button>
+
+        <!-- Stop / Harvest Button -->
+        <button id="stopBatchBtn" class="px-3.5 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center space-x-1.5 transition-all">
+          <span>🛑</span>
+          <span>Stop Reaction</span>
+        </button>
+
+        <!-- History Drawer Button -->
+        <button id="openHistoryModalBtn" class="px-3.5 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center space-x-1.5 transition-all">
+          <span>📜</span>
+          <span>Past Bioprocesses</span>
+        </button>
+
+        <!-- Supabase Settings -->
+        <button id="openSettingsBtn" class="p-2 rounded-lg bg-gray-800/80 border border-white/10 hover:border-cyan-500/50 text-gray-300 hover:text-cyan-400 text-xs transition-colors" title="Supabase Cloud Config">
+          ⚙️
+        </button>
+      </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- ACTIVE REACTION BANNER OR HISTORICAL ARCHIVE REPLAY BANNER -->
+    <!-- ============================================================== -->
+    <div id="activeReactionBanner" class="glass-panel p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border-l-4 border-l-cyan-500">
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="text-lg">🧫</span>
+        <div>
+          <div class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold flex items-center space-x-2">
+            <span id="batchStatusBadge" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">ACTIVE EXPERIMENT</span>
+            <span id="batchIdDisplay" class="mono-font text-gray-500">ID: --</span>
+          </div>
+          <div id="batchNameDisplay" class="text-sm md:text-base font-bold text-white mt-0.5">
+            Loading active batch...
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 text-xs text-gray-300">
+        <div>
+          <span class="text-gray-500">Scientist:</span>
+          <span id="batchScientistDisplay" class="font-semibold text-white ml-1">--</span>
+        </div>
+        <div>
+          <span class="text-gray-500">Organism:</span>
+          <span id="batchOrganismDisplay" class="font-medium text-emerald-400 ml-1">--</span>
+        </div>
+        <div>
+          <span class="text-gray-500">Started:</span>
+          <span id="batchStartedDisplay" class="mono-font ml-1">--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historical Archive Replay Notice (Visible only when viewing a past experiment) -->
+    <div id="historicalArchiveNotice" class="hidden glass-panel p-4 bg-amber-500/10 border-amber-500/40 border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div class="flex items-center space-x-3 text-xs text-amber-200">
+        <span class="text-xl">⚠️</span>
+        <div>
+          <div class="font-bold text-sm text-amber-300">
+            VIEWING HISTORICAL ARCHIVE (READ-ONLY REPLAY)
+          </div>
+          <div id="historicalNoticeText" class="text-xs text-amber-200/80 mt-0.5">
+            Displaying full stored time-series telemetry for this past completed run.
+          </div>
+        </div>
+      </div>
+      <button id="exitReplayBtn" class="px-3.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition-all">
+        ← Return to Active Reaction
+      </button>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- DEMO & LAB CONTROLS BAR (For Class Presentations) -->
+    <!-- ============================================================== -->
+    <div class="glass-panel p-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center space-x-2 text-gray-400">
+        <span class="text-sm">🎯</span>
+        <span class="font-medium">Quick Phase Demonstrator:</span>
+        <span class="text-gray-500 text-[11px]">(Simulate how Python mathematical engine detects each phase in real-time)</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button data-phase="lag" class="phase-preset-btn px-2.5 py-1 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold transition-all">
+          LAG PHASE
+        </button>
+        <button data-phase="log" class="phase-preset-btn px-2.5 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold transition-all">
+          LOG (EXPONENTIAL)
+        </button>
+        <button data-phase="stationary" class="phase-preset-btn px-2.5 py-1 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold transition-all">
+          STATIONARY (PEAK)
+        </button>
+        <button data-phase="death" class="phase-preset-btn px-2.5 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 font-semibold transition-all">
+          DEATH PHASE
+        </button>
+        <button id="tickSimBtn" class="px-2.5 py-1 rounded bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 font-semibold transition-all flex items-center space-x-1">
+          <span>+ Next Reading Step</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- HERO FEATURE: THE GROWTH PHASE & HARVEST DECISION ADVISOR -->
+    <!-- ============================================================== -->
+    <section class="glass-panel p-6 border-l-4 border-l-emerald-500 relative overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        
+        <!-- Left: Status, Peak & Rate Overview -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="flex items-center space-x-3">
+            <span class="text-xs uppercase tracking-wider text-gray-400 font-semibold">Biological Growth Stage</span>
+            <span id="heroStatusBadge" class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider badge-stationary">
+              STATIONARY PHASE
+            </span>
+          </div>
+
+          <h2 id="heroStatusText" class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            Stationary Phase
+          </h2>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
+            <div class="bg-gray-800/40 p-3 rounded-xl border border-white/5">
+              <div class="text-xs text-gray-400">Estimated Peak</div>
+              <div id="heroPeakText" class="text-lg font-bold text-emerald-400 mt-0.5">Reached</div>
+              <div class="text-[11px] text-gray-500">Plateau detected</div>
+            </div>
+
+            <div class="bg-gray-800/40 p-3 rounded-xl border border-white/5">
+              <div class="text-xs text-gray-400">Growth Rate (dN/dt)</div>
+              <div id="heroRateText" class="text-lg font-bold text-amber-400 mt-0.5">+0.2% / hr</div>
+              <div class="text-[11px] text-gray-500">Slope flattening</div>
+            </div>
+
+            <div class="bg-gray-800/40 p-3 rounded-xl border border-white/5 col-span-2 sm:col-span-1">
+              <div class="text-xs text-gray-400">Biomass State</div>
+              <div id="heroTrendText" class="text-lg font-bold text-cyan-400 mt-0.5">Max Yield</div>
+              <div class="text-[11px] text-gray-500">Carrying capacity</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Actionable Recommendation Banner -->
+        <div class="lg:col-span-5">
+          <div id="heroRecommendationBox" class="p-5 rounded-2xl border border-amber-500/40 bg-amber-500/10 text-amber-200 space-y-2 shadow-lg shadow-amber-500/5">
+            <div class="flex items-center space-x-2 font-bold text-sm uppercase tracking-wide">
+              <span id="heroRecommendationIcon" class="text-lg">⚠️</span>
+              <span>Action Recommendation</span>
+            </div>
+            <p id="heroRecommendationText" class="text-sm font-medium leading-relaxed">
+              Optimal harvest window reached! Culture has achieved peak biomass with growth rate approaching zero. Collect sample now for maximum yield.
+            </p>
+          </div>
+
+          <!-- Environmental Alerts Sub-banner -->
+          <div id="envAlertsContainer" class="mt-3 space-y-1.5 hidden">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 5 KEY TELEMETRY CATEGORIES (METRIC CARDS) -->
+    <!-- ============================================================== -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      
+      <!-- Card 1: Turbidity -->
+      <div class="glass-panel p-5 space-y-2">
+        <div class="flex items-center justify-between text-xs text-gray-400">
+          <span class="font-semibold uppercase tracking-wider">Turbidity (OD)</span>
+          <span class="text-emerald-400">🟢 Optical</span>
+        </div>
+        <div id="metricTurbidity" class="text-3xl font-extrabold text-white mono-font">
+          -- NTU
+        </div>
+        <div class="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-white/5">
+          <span id="metricTurbidityPeak">Peak: -- NTU</span>
+          <span class="text-gray-500">Cell Density</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Temperature -->
+      <div class="glass-panel p-5 space-y-2">
+        <div class="flex items-center justify-between text-xs text-gray-400">
+          <span class="font-semibold uppercase tracking-wider">Culture Temp</span>
+          <span class="text-orange-400">🌡️ DS18B20</span>
+        </div>
+        <div id="metricTemp" class="text-3xl font-extrabold text-orange-400 mono-font">
+          -- °C
+        </div>
+        <div class="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-white/5">
+          <span id="metricTempStatus"><span class="text-emerald-400">● Optimal</span></span>
+          <span class="text-gray-500">Target: 30-36°C</span>
+        </div>
+      </div>
+
+      <!-- Card 3: pH Level -->
+      <div class="glass-panel p-5 space-y-2">
+        <div class="flex items-center justify-between text-xs text-gray-400">
+          <span class="font-semibold uppercase tracking-wider">pH Acidity</span>
+          <span class="text-purple-400">🧪 pH Probe</span>
+        </div>
+        <div id="metricPH" class="text-3xl font-extrabold text-purple-400 mono-font">
+          --
+        </div>
+        <div class="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-white/5">
+          <span id="metricPHDelta">Shift: --</span>
+          <span class="text-gray-500">Acid shift</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Headspace Gas (CO2/VOC) -->
+      <div class="glass-panel p-5 space-y-2">
+        <div class="flex items-center justify-between text-xs text-gray-400">
+          <span class="font-semibold uppercase tracking-wider">Off-Gas (CO₂)</span>
+          <span class="text-cyan-400">💨 MQ Gas</span>
+        </div>
+        <div id="metricGas" class="text-3xl font-extrabold text-cyan-400 mono-font">
+          -- PPM
+        </div>
+        <div class="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-white/5">
+          <span id="metricGasPeak">Peak: -- PPM</span>
+          <span class="text-gray-500">Respiration</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Batch Duration -->
+      <div class="glass-panel p-5 space-y-2">
+        <div class="flex items-center justify-between text-xs text-gray-400">
+          <span class="font-semibold uppercase tracking-wider">Batch Runtime</span>
+          <span class="text-blue-400">⏱️ Inoculation</span>
+        </div>
+        <div id="metricDuration" class="text-3xl font-extrabold text-blue-400 mono-font">
+          -- hrs
+        </div>
+        <div class="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-white/5">
+          <span id="metricReadingsCount">-- samples</span>
+          <span class="text-gray-500">Time-series</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- HORIZONTAL SECTION: BIOPROCESS LIFECYCLE MILESTONES & PAST REACTIONS -->
+    <!-- Placed right between Details/Metrics section and Charts section -->
+    <!-- ============================================================== -->
+    <section class="glass-panel p-5 space-y-4 border border-cyan-500/20">
+      
+      <!-- Section Header with Mode Indicator & Quick Batch Switcher -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-3">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-base">⏳</span>
+            <h3 class="font-extrabold text-white text-base tracking-tight">
+              BIOPROCESS LIFECYCLE MILESTONES & AUDIT TRAIL
+            </h3>
+            <span id="milestoneBatchBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              Active Run
+            </span>
+          </div>
+          <p class="text-xs text-gray-400 mt-0.5">
+            Exact timestamp & telemetry at each phase: Start, Log Surge, Peak Biomass, Harvest Alert, Stop/Harvest & Dying/Decay.
+          </p>
+        </div>
+
+        <!-- Horizontal Past Reactions Quick Picker Carousel / Pills -->
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="text-gray-400 font-semibold text-[11px] shrink-0">Switch Reaction:</span>
+          <div id="quickBatchPillsContainer" class="flex items-center space-x-2 overflow-x-auto py-1 max-w-lg scrollbar-thin">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 Horizontal Lifecycle Milestone Cards Track -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        
+        <!-- Milestone 1: Start / Inoculation -->
+        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/5 space-y-1.5 relative overflow-hidden group hover:border-blue-500/40 transition-colors">
+          <div class="flex items-center justify-between text-xs text-blue-400 font-bold">
+            <span class="flex items-center space-x-1"><span>🚀</span><span>1. Start</span></span>
+            <span class="text-[10px] text-gray-500 mono-font">t=0.0h</span>
+          </div>
+          <div id="msStartTime" class="text-xs font-semibold text-white mono-font truncate">--</div>
+          <div class="text-[11px] text-gray-400">
+            Initial: <span id="msStartTurb" class="text-gray-300 mono-font">-- NTU</span> | pH <span id="msStartPH" class="text-purple-300 mono-font">--</span>
+          </div>
+          <div class="text-[10px] text-gray-500">Broth inoculated</div>
+        </div>
+
+        <!-- Milestone 2: Log Acceleration -->
+        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/5 space-y-1.5 relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
+          <div class="flex items-center justify-between text-xs text-emerald-400 font-bold">
+            <span class="flex items-center space-x-1"><span>📈</span><span>2. Log Surge</span></span>
+            <span id="msLogTimeHr" class="text-[10px] text-gray-500 mono-font">t=--h</span>
+          </div>
+          <div id="msLogTime" class="text-xs font-semibold text-white mono-font truncate">--</div>
+          <div class="text-[11px] text-gray-400">
+            Turbidity: <span id="msLogTurb" class="text-emerald-300 mono-font">-- NTU</span>
+          </div>
+          <div class="text-[10px] text-gray-500">Binary fission surge</div>
+        </div>
+
+        <!-- Milestone 3: Peak Biomass -->
+        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/5 space-y-1.5 relative overflow-hidden group hover:border-amber-500/40 transition-colors">
+          <div class="flex items-center justify-between text-xs text-amber-400 font-bold">
+            <span class="flex items-center space-x-1"><span>🏔️</span><span>3. Peak</span></span>
+            <span id="msPeakTimeHr" class="text-[10px] text-gray-500 mono-font">t=--h</span>
+          </div>
+          <div id="msPeakTime" class="text-xs font-semibold text-white mono-font truncate">--</div>
+          <div class="text-[11px] text-gray-400">
+            Peak: <span id="msPeakTurb" class="text-amber-300 mono-font">-- NTU</span>
+          </div>
+          <div class="text-[10px] text-gray-500">Carrying capacity (K)</div>
+        </div>
+
+        <!-- Milestone 4: Harvest Alert -->
+        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/5 space-y-1.5 relative overflow-hidden group hover:border-yellow-500/40 transition-colors">
+          <div class="flex items-center justify-between text-xs text-yellow-400 font-bold">
+            <span class="flex items-center space-x-1"><span>⚠️</span><span>4. Harvest Alert</span></span>
+            <span id="msRecoTimeHr" class="text-[10px] text-gray-500 mono-font">Plateau</span>
+          </div>
+          <div id="msRecoTime" class="text-xs font-semibold text-white mono-font truncate">--</div>
+          <div class="text-[11px] text-gray-400">
+            Off-Gas: <span id="msPeakGas" class="text-cyan-300 mono-font">-- PPM</span>
+          </div>
+          <div class="text-[10px] text-gray-500">dN/dt slope → 0</div>
+        </div>
+
+        <!-- Milestone 5: Reaction Stop / Harvest -->
+        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/5 space-y-1.5 relative overflow-hidden group hover:border-cyan-500/40 transition-colors">
+          <div class="flex items-center justify-between text-xs text-cyan-400 font-bold">
+            <span class="flex items-center space-x-1"><span>🛑</span><span>5. Action Stop</span></span>
+            <span id="msStopAdherence" class="text-[10px] text-emerald-400 font-semibold mono-font">--</span>
+          </div>
+          <div id="msStopTime" class="text-xs font-semibold text-white mono-font truncate">In Progress</div>
+          <div class="text-[11px] text-gray-400">
+            Adherence: <span id="msAdherenceText" class="text-gray-300 font-medium">Monitoring</span>
+          </div>
+          <div class="text-[10px] text-gray-500">Vessel drained / frozen</div>
+        </div>
+
+        <!-- Milestone 6: Dying / Decline State -->
+        <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/5 space-y-1.5 relative overflow-hidden group hover:border-red-500/40 transition-colors">
+          <div class="flex items-center justify-between text-xs text-red-400 font-bold">
+            <span class="flex items-center space-x-1"><span>💀</span><span>6. Decay Phase</span></span>
+            <span id="msDecayStatusPill" class="text-[10px] text-emerald-400 font-semibold">Safe</span>
+          </div>
+          <div id="msDecayTime" class="text-xs font-semibold text-white mono-font truncate">None Detected</div>
+          <div class="text-[11px] text-gray-400">
+            Condition: <span id="msDecayDetail" class="text-emerald-300">Biomass intact</span>
+          </div>
+          <div class="text-[10px] text-gray-500">Autolysis check</div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- INTERACTIVE CHARTS SECTION -->
+    <!-- ============================================================== -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Primary Growth Curve Chart (8 cols) -->
+      <div class="glass-panel p-5 lg:col-span-8 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 class="font-bold text-white text-base">Microbial Growth Curve & Sigmoidal Projection</h3>
+            <p class="text-xs text-gray-400">Actual measured turbidity vs. fitted logistic predictive trajectory</p>
+          </div>
+          <div class="flex items-center space-x-2 text-xs">
+            <span class="inline-block w-3 h-0.5 bg-emerald-500"></span>
+            <span class="text-gray-400">Measured</span>
+            <span class="inline-block w-3 h-0.5 border-t border-dashed border-cyan-400 ml-2"></span>
+            <span class="text-gray-400">Predicted Sigmoid</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="growthChartCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- First Derivative (Growth Rate dN/dt) Chart (4 cols) -->
+      <div class="glass-panel p-5 lg:col-span-4 space-y-3">
+        <div>
+          <h3 class="font-bold text-white text-base">Growth Rate (dN/dt)</h3>
+          <p class="text-xs text-gray-400">Derivative curve detects stationary plateau when rate → 0</p>
+        </div>
+        <div class="chart-container">
+          <canvas id="derivativeChartCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Environmental Trends Chart (Full width) -->
+      <div class="glass-panel p-5 lg:col-span-12 space-y-3">
+        <div>
+          <h3 class="font-bold text-white text-base">Environmental & Off-Gas Correlation (Temperature, pH & Gas vs. Time)</h3>
+          <p class="text-xs text-gray-400">Tracks thermal stability, broth acidification (pH drop), and off-gas emissions (CO₂ in PPM) as microbial metabolism progresses</p>
+        </div>
+        <div class="chart-container" style="height: 260px;">
+          <canvas id="envChartCanvas"></canvas>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- LIVE TELEMETRY DATA STREAM TABLE -->
+    <!-- ============================================================== -->
+    <section class="glass-panel p-5 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-white text-base">Live Telemetry Packets (ESP32 Stream)</h3>
+          <p class="text-xs text-gray-400">Real-time records ingested through Supabase database</p>
+        </div>
+        <span class="text-xs text-gray-500 mono-font">Displaying latest 8 readings</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-white/10 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              <th class="py-2.5 px-3">Timestamp</th>
+              <th class="py-2.5 px-3">Turbidity (OD)</th>
+              <th class="py-2.5 px-3">Temperature</th>
+              <th class="py-2.5 px-3">pH Value</th>
+              <th class="py-2.5 px-3">Off-Gas (PPM)</th>
+              <th class="py-2.5 px-3">Source Device</th>
+            </tr>
+          </thead>
+          <tbody id="telemetryTableBody" class="divide-y divide-white/5">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-gray-500 py-4">
+      AICTE IDEA Lab 1st Semester Student Project • IoT Bioprocess Monitoring & Growth Prediction System
+    </footer>
+
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: START NEW REACTION / BIOPROCESS -->
+  <!-- ============================================================== -->
+  <div id="startBatchModal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center p-4 z-50">
+    <div class="glass-panel p-6 max-w-lg w-full space-y-4 border border-white/20 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+          <span>🧪</span>
+          <span>Start New Bioprocess Reaction</span>
+        </h3>
+        <button id="closeStartBatchModalBtn" class="text-gray-400 hover:text-white text-xl">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-400">
+        Initiate a fresh reaction session. This marks previous reactions as finished and starts recording clean time-series data from $t = 0.0$ hours.
+      </p>
+
+      <form id="startBatchForm" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-gray-300 font-semibold mb-1">
+            Reaction / Experiment Name <span class="text-red-400">*</span>
+          </label>
+          <input id="inputBatchName" type="text" required placeholder="e.g., Yeast High-Density Fermentation Run #04" class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-emerald-500 focus:outline-none text-xs">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-semibold mb-1">
+            Lead Scientist / Student Name <span class="text-red-400">*</span>
+          </label>
+          <input id="inputScientistName" type="text" required placeholder="e.g., Dr. Ananya Sen / Student Group B" class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-emerald-500 focus:outline-none text-xs">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-gray-300 font-semibold mb-1">Microorganism</label>
+            <input id="inputOrganism" type="text" value="Saccharomyces cerevisiae" class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-cyan-500 focus:outline-none text-xs">
+          </div>
+          <div>
+            <label class="block text-gray-300 font-semibold mb-1">Broth / Medium</label>
+            <input id="inputBroth" type="text" value="YPD Nutrient Broth (2% Glucose)" class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-cyan-500 focus:outline-none text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-semibold mb-1">Experiment Notes / Goals</label>
+          <textarea id="inputNotes" rows="2" placeholder="e.g., Testing stationary phase plateau detection and timing harvest window before cell death." class="w-full bg-gray-900 border border-white/10 rounded-lg p-2 text-white focus:border-cyan-500 focus:outline-none text-xs"></textarea>
+        </div>
+
+        <div id="startBatchError" class="text-red-400 text-xs hidden"></div>
+
+        <div class="flex justify-end space-x-2 pt-2 border-t border-white/10">
+          <button type="button" id="cancelStartBatchBtn" class="px-4 py-2 rounded-lg bg-gray-800 text-gray-300 hover:text-white font-medium text-xs">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-xs rounded-lg transition-all shadow-md shadow-emerald-500/20">
+            ▶ Inoculate & Start Reaction
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: PAST BIOPROCESSES / HISTORY DRAWER -->
+  <!-- ============================================================== -->
+  <div id="historyModal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center p-4 z-50">
+    <div class="glass-panel p-6 max-w-4xl w-full max-h-[85vh] flex flex-col space-y-4 border border-white/20 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <span>📜</span>
+            <span>Past Bioprocess Reactions Archive</span>
+          </h3>
+          <p class="text-xs text-gray-400">
+            Select any completed or past reaction to view its stored time-series telemetry and growth curve.
+          </p>
+        </div>
+        <button id="closeHistoryModalBtn" class="text-gray-400 hover:text-white text-xl">✕</button>
+      </div>
+
+      <!-- Batches List Container (Scrollable) -->
+      <div id="batchesListContainer" class="overflow-y-auto space-y-3 pr-1 text-xs">
+        <div class="text-center py-8 text-gray-500">Loading historical batches...</div>
+      </div>
+
+      <div class="flex justify-between items-center pt-2 border-t border-white/10 text-xs text-gray-400">
+        <span>Stored in Supabase PostgreSQL</span>
+        <button id="closeHistoryModalBtn2" class="px-4 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:text-white font-medium">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: SUPABASE CONFIGURATION -->
+  <!-- ============================================================== -->
+  <div id="settingsModal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center p-4 z-50">
+    <div class="glass-panel p-6 max-w-md w-full space-y-4 border border-white/20 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+          <span>⚡</span>
+          <span>Supabase Cloud Settings</span>
+        </h3>
+        <button id="closeModalBtn" class="text-gray-400 hover:text-white text-xl">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-400">
+        Connect your Supabase PostgreSQL project to stream sensor data from your ESP32.
+      </p>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-gray-300 font-semibold mb-1">Supabase Project URL</label>
+          <input id="supabaseUrlInput" type="text" placeholder="https://xyzcompany.supabase.co" class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-cyan-500 focus:outline-none mono-font text-xs">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-semibold mb-1">Supabase Anon / Public Key</label>
+          <input id="supabaseKeyInput" type="password" placeholder="eyJhbGciOi..." class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-cyan-500 focus:outline-none mono-font text-xs">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-semibold mb-1">Readings Table</label>
+          <input id="supabaseTableInput" type="text" value="bioprocess_readings" class="w-full bg-gray-900 border border-white/10 rounded-lg p-2.5 text-white focus:border-cyan-500 focus:outline-none mono-font text-xs">
+        </div>
+
+        <div id="configTestStatus" class="min-h-[20px] text-[11px]"></div>
+      </div>
+
+      <div class="flex justify-end space-x-2 pt-2 border-t border-white/10">
+        <button id="saveConfigBtn" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-xs rounded-lg transition-all shadow-md shadow-emerald-500/20">
+          Save & Connect
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
