@@ -93,3 +93,37 @@ VALUES (
     'active',
     'Initial baseline batch tracking optical density, pH shift, and CO2 evolution.'
 ) ON CONFLICT DO NOTHING;
+
+-- -------------------------------------------------------------
+-- 6. Indian Standard Time (IST) 12-Hour (AM/PM) Views
+-- (Allows viewing 12-hour formatted local time directly in Supabase)
+-- -------------------------------------------------------------
+CREATE OR REPLACE VIEW bioprocess_batches_ist AS
+SELECT 
+    id,
+    batch_name,
+    scientist_name,
+    organism,
+    broth_type,
+    status,
+    to_char(started_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD HH12:MI:SS AM') AS started_at_ist_12hr,
+    to_char(harvest_recommended_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD HH12:MI:SS AM') AS harvest_recommended_at_ist_12hr,
+    to_char(stopped_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD HH12:MI:SS AM') AS stopped_at_ist_12hr,
+    harvest_delay_minutes,
+    peak_turbidity,
+    peak_gas,
+    notes
+FROM bioprocess_batches;
+
+CREATE OR REPLACE VIEW bioprocess_readings_ist AS
+SELECT 
+    id,
+    batch_id,
+    to_char(created_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD HH12:MI:SS AM') AS timestamp_ist_12hr,
+    device_id,
+    turbidity,
+    temperature,
+    ph,
+    gas,
+    detected_phase
+FROM bioprocess_readings;

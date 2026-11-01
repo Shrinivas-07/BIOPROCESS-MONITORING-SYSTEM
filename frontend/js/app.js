@@ -342,7 +342,7 @@ async function refreshDashboard() {
     updateLifecycleMilestones(prediction, currentActiveBatch);
     renderQuickBatchPills(cachedBatchesList);
     updateHistoryTable(history?.data || []);
-    ChartsManager.updateCharts(history?.data || [], prediction);
+    ChartsManager.updateCharts(history?.data || [], prediction, currentActiveBatch);
 
     // Track when recommendation hits stationary
     if (prediction?.phase_code === 'stationary' && !lastHarvestRecommendedAt) {
@@ -383,7 +383,7 @@ function updateActiveBatchBanner(batch) {
 
   if (startEl && batch.started_at) {
     const sDate = new Date(batch.started_at);
-    startEl.innerText = `${sDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${sDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    startEl.innerText = `${sDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${sDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
   }
 
   if (badgeEl) {
@@ -507,10 +507,28 @@ function updateMetricCards(pred) {
   if (gasVal) gasVal.innerText = `${reading.gas || 400} PPM`;
   if (gasPeak) gasPeak.innerText = `Peak: ${metrics.peak_gas || reading.gas || 400} PPM`;
 
-  // Batch Duration
+  // Batch Duration (Both Hours and Minutes)
   const durVal = document.getElementById('metricDuration');
   const countVal = document.getElementById('metricReadingsCount');
-  if (durVal) durVal.innerText = `${metrics.batch_duration_hours || 0.0} hrs`;
+  if (durVal) {
+    let durText = '0 min';
+    if (metrics.batch_duration_formatted) {
+      durText = metrics.batch_duration_formatted;
+    } else if (currentActiveBatch?.started_at) {
+      const s = new Date(currentActiveBatch.started_at).getTime();
+      const e = currentActiveBatch.stopped_at ? new Date(currentActiveBatch.stopped_at).getTime() : Date.now();
+      const mTotal = Math.max(0, Math.round((e - s) / 60000));
+      const h = Math.floor(mTotal / 60);
+      const m = mTotal % 60;
+      durText = h > 0 ? `${h}h ${m}m` : `${m} min`;
+    } else if (metrics.batch_duration_hours !== undefined) {
+      const mTotal = Math.round(Number(metrics.batch_duration_hours) * 60);
+      const h = Math.floor(mTotal / 60);
+      const m = mTotal % 60;
+      durText = h > 0 ? `${h}h ${m}m` : `${m} min`;
+    }
+    durVal.innerText = durText;
+  }
   if (countVal) countVal.innerText = `${metrics.total_readings || 0} samples logged`;
 }
 
@@ -528,12 +546,12 @@ function updateLifecycleMilestones(analysis, batch) {
 
   if (ms.inoculation_start) {
     const sDate = new Date(ms.inoculation_start.timestamp);
-    if (startEl) startEl.innerText = `${sDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${sDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    if (startEl) startEl.innerText = `${sDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${sDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true})}`;
     if (startTurbEl) startTurbEl.innerText = `${ms.inoculation_start.turbidity} NTU`;
     if (startPHEl) startPHEl.innerText = `${ms.inoculation_start.ph}`;
   } else if (batch?.started_at) {
     const sDate = new Date(batch.started_at);
-    if (startEl) startEl.innerText = `${sDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${sDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    if (startEl) startEl.innerText = `${sDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${sDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true})}`;
     if (startTurbEl) startTurbEl.innerText = `105.0 NTU`;
     if (startPHEl) startPHEl.innerText = `7.05`;
   }
@@ -545,7 +563,7 @@ function updateLifecycleMilestones(analysis, batch) {
 
   if (ms.log_acceleration) {
     const lDate = new Date(ms.log_acceleration.timestamp);
-    if (logTimeEl) logTimeEl.innerText = `${lDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    if (logTimeEl) logTimeEl.innerText = `${lDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true})}`;
     if (logHrEl) logHrEl.innerText = `t=${ms.log_acceleration.time_hr}h`;
     if (logTurbEl) logTurbEl.innerText = `${ms.log_acceleration.turbidity} NTU`;
   } else {
@@ -561,7 +579,7 @@ function updateLifecycleMilestones(analysis, batch) {
 
   if (ms.peak_biomass) {
     const pDate = new Date(ms.peak_biomass.timestamp);
-    if (peakTimeEl) peakTimeEl.innerText = `${pDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${pDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    if (peakTimeEl) peakTimeEl.innerText = `${pDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${pDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true})}`;
     if (peakHrEl) peakHrEl.innerText = `t=${ms.peak_biomass.time_hr}h`;
     if (peakTurbEl) peakTurbEl.innerText = `${ms.peak_biomass.turbidity} NTU`;
   } else if (batch?.peak_turbidity) {
@@ -581,11 +599,11 @@ function updateLifecycleMilestones(analysis, batch) {
 
   if (ms.harvest_window) {
     const rDate = new Date(ms.harvest_window.timestamp);
-    if (recoTimeEl) recoTimeEl.innerText = rDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    if (recoTimeEl) recoTimeEl.innerText = rDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true});
     if (recoHrEl) recoHrEl.innerText = `t=${ms.harvest_window.time_hr}h`;
   } else if (batch?.harvest_recommended_at) {
     const rDate = new Date(batch.harvest_recommended_at);
-    if (recoTimeEl) recoTimeEl.innerText = rDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    if (recoTimeEl) recoTimeEl.innerText = rDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true});
     if (recoHrEl) recoHrEl.innerText = 'Stationary Hit';
   } else {
     if (recoTimeEl) recoTimeEl.innerText = 'Pending Peak';
@@ -600,7 +618,7 @@ function updateLifecycleMilestones(analysis, batch) {
 
   if (batch?.stopped_at) {
     const stDate = new Date(batch.stopped_at);
-    if (stopTimeEl) stopTimeEl.innerText = `${stDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${stDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    if (stopTimeEl) stopTimeEl.innerText = `${stDate.toLocaleDateString([], {month:'short', day:'numeric'})} ${stDate.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', hour12: true})}`;
     
     if (batch.harvest_delay_minutes === 0 || batch.harvest_delay_minutes === null) {
       if (stopAdhEl) {
@@ -768,9 +786,22 @@ async function loadPastBatchesList() {
 
   container.innerHTML = batches.map(b => {
     const sDate = new Date(b.started_at || b.created_at);
-    const dateStr = sDate.toLocaleDateString();
-    const timeStr = sDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dateStr = sDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = sDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
     const isCompleted = b.status === 'completed';
+
+    // Calculate exact runtime in hours and minutes
+    const startMs = sDate.getTime();
+    const endMs = b.stopped_at ? new Date(b.stopped_at).getTime() : Date.now();
+    const totalMins = Math.max(1, Math.round((endMs - startMs) / 60000));
+    const durH = Math.floor(totalMins / 60);
+    const durM = totalMins % 60;
+    const runtimeStr = durH > 0 ? `${durH}h ${durM}m` : `${durM} min`;
+
+    let stopTimeStr = '';
+    if (b.stopped_at) {
+      stopTimeStr = new Date(b.stopped_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
 
     let adherenceBadge = '';
     if (isCompleted) {
@@ -793,7 +824,9 @@ async function loadPastBatchesList() {
           <div class="text-gray-400 text-xs flex flex-wrap gap-x-4">
             <span>Scientist: <strong class="text-gray-300">${b.scientist_name}</strong></span>
             <span>Organism: <strong class="text-emerald-400">${b.organism || 'S. cerevisiae'}</strong></span>
-            <span>Started: <span class="mono-font text-gray-400">${dateStr} ${timeStr}</span></span>
+            <span>Started: <span class="mono-font text-gray-300">${dateStr} at ${timeStr}</span></span>
+            ${stopTimeStr ? `<span>Stopped: <span class="mono-font text-gray-300">${stopTimeStr}</span></span>` : ''}
+            <span>Runtime: <strong class="text-cyan-300 mono-font font-bold">${runtimeStr}</strong></span>
           </div>
           ${b.notes ? `<div class="text-[11px] text-gray-500 italic mt-0.5">"${b.notes}"</div>` : ''}
         </div>
@@ -841,5 +874,5 @@ function renderHistoricalBatch(details) {
   updateLifecycleMilestones(analysis, batch);
   renderQuickBatchPills(cachedBatchesList);
   updateHistoryTable(readings);
-  ChartsManager.updateCharts(readings, analysis);
+  ChartsManager.updateCharts(readings, analysis, batch);
 }
