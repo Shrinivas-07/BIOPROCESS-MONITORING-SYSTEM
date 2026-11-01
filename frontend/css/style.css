@@ -141,6 +141,51 @@ body {
   height: 320px;
 }
 
+/* Horizontal Timeline Scroll Wrapper */
+.chart-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(6, 182, 212, 0.5) rgba(15, 23, 42, 0.7);
+  -webkit-overflow-scrolling: touch;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar {
+  height: 7px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 9999px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  border-radius: 9999px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #06b6d4;
+}
+
+.chart-inner-canvas {
+  position: relative;
+  height: 320px;
+  min-width: 100%;
+  transition: min-width 0.25s ease;
+}
+
+/* Stock Market Timeline Button Active State */
+.timeline-res-btn.active {
+  background: rgba(6, 182, 212, 0.25);
+  color: #38bdf8;
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+  font-weight: 700;
+}
+
 /* Modal styling */
 .modal-backdrop {
   background: rgba(5, 8, 15, 0.8);

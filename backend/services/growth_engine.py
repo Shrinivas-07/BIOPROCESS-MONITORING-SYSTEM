@@ -286,6 +286,16 @@ class GrowthEngine:
                 }
                 break
 
+        # Calculate runtime in both hours and minutes
+        total_dur_hours = round(time_hours[-1], 2) if time_hours else 0.0
+        total_dur_minutes = int(round(total_dur_hours * 60))
+        dur_h = total_dur_minutes // 60
+        dur_m = total_dur_minutes % 60
+        if dur_h == 0:
+            dur_formatted = f"{dur_m} min" if dur_m > 0 else "< 1 min"
+        else:
+            dur_formatted = f"{dur_h}h {dur_m}m"
+
         return {
             "current_status": current_status,
             "phase_code": phase_code,
@@ -310,7 +320,9 @@ class GrowthEngine:
                 "peak_gas": round(max(gases), 1),
                 "predicted_carrying_capacity_K": round(fitted_K, 1),
                 "total_readings": n_points,
-                "batch_duration_hours": round(time_hours[-1], 2)
+                "batch_duration_hours": total_dur_hours,
+                "batch_duration_minutes": total_dur_minutes,
+                "batch_duration_formatted": dur_formatted
             },
             "phase_milestones": milestones,
             "environmental_alerts": env_alerts,
@@ -344,7 +356,9 @@ class GrowthEngine:
                 "peak_gas": 400.0,
                 "predicted_carrying_capacity_K": 800.0,
                 "total_readings": 0,
-                "batch_duration_hours": 0.0
+                "batch_duration_hours": 0.0,
+                "batch_duration_minutes": 0,
+                "batch_duration_formatted": "0 min"
             },
             "phase_milestones": {
                 "inoculation_start": None,

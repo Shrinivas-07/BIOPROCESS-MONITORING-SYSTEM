@@ -9,11 +9,14 @@ class Config:
     HOST = os.getenv("HOST", "0.0.0.0")
     DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
-    # Supabase Configuration
-    SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
-    SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
-    SUPABASE_TABLE = os.getenv("SUPABASE_TABLE", "bioprocess_readings")
-    SUPABASE_BATCHES_TABLE = os.getenv("SUPABASE_BATCHES_TABLE", "bioprocess_batches")
+    # Supabase Configuration - automatically strips any trailing slashes or /rest/v1
+    _raw_url = os.getenv("SUPABASE_URL", "").strip().rstrip("/")
+    if _raw_url.endswith("/rest/v1"):
+        _raw_url = _raw_url[:-8].rstrip("/")
+    SUPABASE_URL = _raw_url
+    SUPABASE_KEY = os.getenv("SUPABASE_KEY", "").strip()
+    SUPABASE_TABLE = os.getenv("SUPABASE_TABLE", "bioprocess_readings").strip()
+    SUPABASE_BATCHES_TABLE = os.getenv("SUPABASE_BATCHES_TABLE", "bioprocess_batches").strip()
 
     # Auto-enable fallback simulation if Supabase credentials are missing
     AUTO_SIMULATION = os.getenv("AUTO_SIMULATION", "True").lower() in ("true", "1", "yes")
