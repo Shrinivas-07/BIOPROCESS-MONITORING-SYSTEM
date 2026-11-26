@@ -1,194 +1,269 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg-primary: #070a11;
-  --bg-secondary: #0d121f;
-  --bg-card: rgba(15, 23, 42, 0.7);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(16, 185, 129, 0.35);
+  --bg-canvas: #080b0f;
+  --bg-surface: #0f141b;
+  --bg-elevated: #151c26;
+  --border-subtle: #1e2733;
+  --border-active: #334155;
 
-  --emerald: #10b981;
-  --cyan: #06b6d4;
-  --amber: #f59e0b;
-  --purple: #8b5cf6;
-  --pink: #ec4899;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --signal-emerald: #10b981;
+  --signal-cyan: #0ea5e9;
+  --signal-amber: #f59e0b;
+  --signal-blue: #3b82f6;
+  --signal-red: #ef4444;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: #f3f4f6;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
   overflow-x: hidden;
   position: relative;
-  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Background Animated Gradient Mesh */
-.mesh-gradient {
+/* Precision Engineering Blueprint Dot-Grid Canvas */
+.tech-grid-bg {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+  inset: 0;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.25) 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.25) 60%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Glassmorphic Panels */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Structural Panel (Replaces generic neon glassmorphism) */
+.instrument-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+.instrument-panel-interactive:hover {
+  border-color: var(--border-active);
+  background: #121821;
 }
 
 .mono-font {
   font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Micro-interaction Buttons */
+/* Precision Action Controls */
 .btn-primary {
-  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-  color: #ffffff;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  background: #10b981;
+  color: #05130e;
+  font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.9);
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
+  background: #34d399;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #e5e7eb;
-  transition: all 0.25s ease;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-active);
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
+  background: var(--bg-elevated);
+  border-color: #475569;
 }
 
-/* Horizontal Scroll Container */
+/* Horizontal Scroll Rail */
 .horizontal-scroll-container {
   display: flex;
   overflow-x: auto;
-  gap: 1.5rem;
-  padding: 1rem 0 2rem 0;
+  gap: 1.25rem;
+  padding: 0.5rem 0 1.25rem 0;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
 
 .horizontal-scroll-container::-webkit-scrollbar {
-  height: 6px;
+  height: 5px;
 }
 
 .horizontal-scroll-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
+  background: var(--bg-surface);
+  border-radius: 9999px;
 }
 
 .horizontal-scroll-container::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.3);
-  border-radius: 4px;
+  background: #334155;
+  border-radius: 9999px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
 
 .horizontal-scroll-card {
-  flex: 0 0 320px;
+  flex: 0 0 300px;
   scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
   .horizontal-scroll-card {
-    flex: 0 0 360px;
+    flex: 0 0 340px;
   }
 }
 
-/* Scrollytelling Timeline & Active States */
+/* Scrollytelling Step States */
 .step-card {
-  transition: all 0.4s ease;
+  transition: border-color 0.25s ease, opacity 0.25s ease, background-color 0.25s ease;
   opacity: 0.55;
-  transform: scale(0.98);
+  border-left: 3px solid transparent;
 }
 
 .step-card.active-step {
   opacity: 1;
-  transform: scale(1);
-  border-color: rgba(16, 185, 129, 0.5);
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+  background: #121821;
+  border-color: var(--border-active);
+  border-left: 3px solid var(--signal-emerald);
 }
 
-/* Interactive Scrubber Slider Styling */
+/* Precision Range Scrubber */
 input[type="range"] {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
+  height: 6px;
+  background: #1e2733;
+  border-radius: 9999px;
   outline: none;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #10b981;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
-  border: 2px solid #ffffff;
+  border: 2px solid #080b0f;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
   transition: transform 0.15s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 
-/* Animated Bioprocess Culture Flask Graphic */
+/* Precision Laboratory Bioreactor Vessel Graphic */
+.vessel-wrapper {
+  position: relative;
+  width: 170px;
+  margin: 0 auto;
+}
+
+.vessel-headplate {
+  width: 136px;
+  height: 14px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  border: 1px solid #475569;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+}
+
+.vessel-port {
+  position: absolute;
+  top: -12px;
+  width: 6px;
+  height: 12px;
+  background: #475569;
+  border-radius: 2px 2px 0 0;
+}
+
 .flask-vessel {
   position: relative;
-  width: 160px;
-  height: 200px;
+  width: 144px;
+  height: 196px;
   margin: 0 auto;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid #334155;
   border-top: none;
-  border-radius: 0 0 50px 50px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 0 36px 36px;
+  background: rgba(15, 23, 42, 0.55);
   overflow: hidden;
 }
 
-.flask-neck {
-  width: 50px;
-  height: 40px;
-  margin: 0 auto;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-bottom: none;
-  border-radius: 6px 6px 0 0;
-  background: rgba(255, 255, 255, 0.03);
+/* Graduated Volume Ticks inside Vessel */
+.vessel-ticks {
+  position: absolute;
+  right: 8px;
+  top: 16px;
+  bottom: 28px;
+  width: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.vessel-ticks span {
+  display: block;
+  height: 1px;
+  background: rgba(148, 163, 184, 0.35);
+}
+
+.vessel-ticks span:nth-child(odd) {
+  width: 100%;
+}
+
+.vessel-ticks span:nth-child(even) {
+  width: 60%;
+  margin-left: auto;
+}
+
+/* Submerged Sensor Probes */
+.vessel-probe-left {
+  position: absolute;
+  left: 24px;
+  top: 0;
+  width: 4px;
+  height: 148px;
+  background: linear-gradient(180deg, #64748b, #94a3b8);
+  border-radius: 0 0 2px 2px;
+  z-index: 3;
+}
+
+.vessel-probe-right {
+  position: absolute;
+  left: 44px;
+  top: 0;
+  width: 3px;
+  height: 126px;
+  background: linear-gradient(180deg, #475569, #38bdf8);
+  border-radius: 0 0 2px 2px;
+  z-index: 3;
 }
 
 .flask-liquid {
@@ -196,50 +271,48 @@ input[type="range"]::-webkit-slider-thumb:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 65%;
-  background: linear-gradient(180deg, rgba(234, 179, 8, 0.3) 0%, rgba(202, 138, 4, 0.6) 100%);
-  transition: background 0.5s ease, filter 0.5s ease;
+  height: 68%;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.55) 100%);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  transition: background 0.45s ease, filter 0.45s ease;
+  z-index: 1;
 }
 
 .flask-bubbles {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.4) 10%, transparent 20%);
-  background-size: 15px 15px;
-  animation: floatBubbles 3s infinite linear;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.32) 1px, transparent 2px);
+  background-size: 16px 18px;
+  animation: floatBubbles 3.2s infinite linear;
 }
 
 @keyframes floatBubbles {
-  0% { transform: translateY(0); opacity: 0.3; }
-  50% { opacity: 0.7; }
-  100% { transform: translateY(-40px); opacity: 0; }
+  0% { transform: translateY(12px); opacity: 0.2; }
+  50% { opacity: 0.55; }
+  100% { transform: translateY(-28px); opacity: 0; }
 }
 
-/* Badge phase glow effects */
+/* Clean Biological Phase Badges */
 .badge-stationary {
-  background: rgba(245, 158, 11, 0.15);
+  background: rgba(245, 158, 11, 0.12);
   color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
 .badge-log {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.12);
   color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .badge-lag {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(59, 130, 246, 0.12);
   color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  border: 1px solid rgba(59, 130, 246, 0.35);
 }
 
 .badge-death {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.12);
   color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  border: 1px solid rgba(239, 68, 68, 0.35);
 }
-

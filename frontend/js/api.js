@@ -152,8 +152,8 @@ const Api = {
 
   async getLatestTelemetry(batchId = null) {
     try {
-      const url = batchId 
-        ? `${API_BASE}/api/telemetry/latest?batch_id=${encodeURIComponent(batchId)}` 
+      const url = batchId
+        ? `${API_BASE}/api/telemetry/latest?batch_id=${encodeURIComponent(batchId)}`
         : `${API_BASE}/api/telemetry/latest`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -191,9 +191,6 @@ const Api = {
     }
   },
 
-  // -------------------------------------------------------------
-  // BATCH / EXPERIMENT LIFECYCLE APIS
-  // -------------------------------------------------------------
   async getBatches(limit = 10) {
     try {
       const res = await fetch(`${API_BASE}/api/batches?limit=${limit}`);
@@ -279,9 +276,6 @@ const Api = {
     }
   },
 
-  // -------------------------------------------------------------
-  // SIMULATION & SETTINGS
-  // -------------------------------------------------------------
   async resetSimulation(phase = 'stationary') {
     try {
       const res = await fetch(`${API_BASE}/api/simulation/reset`, {
