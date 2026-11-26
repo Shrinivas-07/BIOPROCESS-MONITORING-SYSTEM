@@ -1,46 +1,41 @@
 /**
  * Bioprocess API Client
- * Communicates with the Python Flask Backend and Supabase REST Proxy
- * Includes dynamic Render/Cloud backend linking and clean offline preview fallback
+ * Communicates with the Python Flask Backend and Supabase proxy
+ * Includes seamless Offline Preview Fallback for cloud static deployments (Vercel)
  */
 
-const API_BASE = (typeof window !== 'undefined' && window.__API_URL__)
-  || (typeof localStorage !== 'undefined' && localStorage.getItem('BIOPROCESS_API_BASE'))
+// Dynamic API Base: Checks runtime override, localStorage, or defaults to current origin
+const API_BASE = (typeof window !== 'undefined' && window.__API_URL__) 
+  || (typeof localStorage !== 'undefined' && localStorage.getItem('BIOPROCESS_API_BASE')) 
   || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000');
 
 const MockData = {
-  _cachedHistory: null,
-
   getPreviewBatch() {
     return {
-      id: 'preview-batch-03',
-      batch_name: 'S. cerevisiae Batch Run #03 (Preview)',
-      scientist_name: 'Bio-Automation Lab',
-      organism: 'Saccharomyces cerevisiae',
-      broth_type: 'YPD Medium (2% Glucose)',
+      id: "preview-batch-live",
+      batch_name: "Live Bioprocess Reactor Run #03 (Interactive Preview)",
+      scientist_name: "IDEA Lab Lead Researcher",
+      organism: "Saccharomyces cerevisiae",
+      broth_type: "Standard YPD Nutrient Broth",
       started_at: new Date(Date.now() - 4.2 * 3600000).toISOString(),
-      status: 'active',
-      notes: 'Standby preview stream active. Link backend endpoint to ingest live ESP32 telemetry.'
+      status: "active",
+      notes: "Interactive preview active until Render backend is deployed & connected."
     };
   },
-
   getPreviewHistory() {
-    if (this._cachedHistory) return this._cachedHistory;
-
     const points = [];
-    const count = 24;
+    const count = 22;
     const startTime = Date.now() - 4.2 * 3600000;
     const stepMs = (4.2 * 3600000) / count;
     for (let i = 0; i <= count; i++) {
       const t = i * (4.2 / count);
-      const turb = Number((105 + 660 / (1 + Math.exp(-1.35 * (t - 2.35)))).toFixed(1));
-      const temp = Number((31.6 + 0.45 * Math.sin(t * 0.9)).toFixed(1));
-      const ph = Number((7.08 - 1.48 / (1 + Math.exp(-1.25 * (t - 2.15)))).toFixed(2));
-      const gas = Math.round(415 + 1480 / (1 + Math.exp(-1.45 * (t - 2.45))));
+      const turb = Math.round(100 + 640 / (1 + Math.exp(-1.4 * (t - 2.4))) + (Math.random() * 4 - 2));
+      const temp = Number((31.8 + 0.4 * Math.sin(t) + (Math.random() * 0.2 - 0.1)).toFixed(1));
+      const ph = Number((7.05 - 1.45 / (1 + Math.exp(-1.3 * (t - 2.1))) + (Math.random() * 0.03 - 0.015)).toFixed(2));
+      const gas = Math.round(410 + 1380 / (1 + Math.exp(-1.5 * (t - 2.5))) + (Math.random() * 15 - 7));
       points.push({
         id: `preview-pt-${i}`,
         created_at: new Date(startTime + i * stepMs).toISOString(),
-        device_id: 'ESP32_BIO_01',
         turbidity: turb,
         temperature: temp,
         ph: ph,
@@ -48,90 +43,84 @@ const MockData = {
         time_elapsed_hours: Number(t.toFixed(2))
       });
     }
-    this._cachedHistory = points;
     return points;
   },
-
   getPreviewPrediction() {
     const history = this.getPreviewHistory();
     const latest = history[history.length - 1];
-    const startTs = history[0].created_at;
     return {
-      current_status: 'Log (Exponential) Phase',
-      phase_code: 'log',
-      growth_rate_formatted: '+18.4% / hr',
-      estimated_peak: '~1.8 Hours Remaining',
-      growth_trend: 'Accelerating',
-      recommendation: 'Rapid exponential cellular proliferation active. Maintain thermal setpoint (32°C) and continuous aeration; prepare downstream harvest vessels.',
+      current_status: "Log Phase (Exponential Growth)",
+      phase_code: "log",
+      growth_rate_formatted: "+22.4% per hr",
+      estimated_peak: "~1.5 - 2.0 Hours Remaining",
+      recommendation: "Continue incubation. Rapid cellular proliferation active. Monitor headspace off-gas.",
       environmental_alerts: [],
-      data_source: 'offline_preview',
+      data_source: "offline_preview",
       latest_reading: latest,
       metrics: {
-        initial_turbidity: history[0].turbidity,
         peak_turbidity: latest.turbidity,
         peak_gas: latest.gas,
-        predicted_carrying_capacity_K: 785.0,
         batch_duration_hours: 4.2,
-        batch_duration_minutes: 252,
-        batch_duration_formatted: '4h 12m',
-        total_readings: history.length
+        total_readings: history.length,
+        carrying_capacity_k: 760.0
       },
       phase_milestones: {
-        inoculation_start: { timestamp: startTs, turbidity: history[0].turbidity, ph: history[0].ph },
-        log_acceleration: { timestamp: history[6].created_at, time_hr: 1.05, turbidity: history[6].turbidity },
-        peak_biomass: null,
-        harvest_window: null,
-        decline_death: null
+        inoculation_start: { timestamp: history[0].created_at, turbidity: 105.0, ph: 7.05 },
+        log_acceleration: { timestamp: history[6].created_at, time_hr: 1.2, turbidity: 220.0, growth_rate: 64.0 },
+        maximum_inflection: { timestamp: history[13].created_at, time_hr: 2.5, turbidity: 470.0, max_rate: 110.5 },
+        peak_harvest_target: { timestamp: new Date(Date.now() + 1.8 * 3600000).toISOString(), projected_time_hr: 6.0, estimated_turbidity: 755.0, recommendation: "Harvest when rate drops < 15 NTU/h" },
+        harvest_stop_actual: null,
+        death_decay_onset: null
       },
       predicted_projection: [
-        { time_hr: 4.2, predicted_turbidity: latest.turbidity },
-        { time_hr: 4.8, predicted_turbidity: 738.4 },
-        { time_hr: 5.4, predicted_turbidity: 762.8 },
-        { time_hr: 6.0, predicted_turbidity: 775.1 },
-        { time_hr: 6.6, predicted_turbidity: 781.0 }
+        { time_hr: 4.5, projected_turbidity: 710.0 },
+        { time_hr: 5.0, projected_turbidity: 738.0 },
+        { time_hr: 5.5, projected_turbidity: 752.0 },
+        { time_hr: 6.0, projected_turbidity: 758.0 },
+        { time_hr: 6.5, projected_turbidity: 760.0 }
       ],
-      growth_rate_series: [
-        { time_hr: 0.5, growth_rate_dndt: 22.4 },
-        { time_hr: 1.0, growth_rate_dndt: 58.1 },
-        { time_hr: 1.5, growth_rate_dndt: 112.6 },
-        { time_hr: 2.0, growth_rate_dndt: 185.0 },
-        { time_hr: 2.4, growth_rate_dndt: 222.8 },
-        { time_hr: 3.0, growth_rate_dndt: 164.3 },
-        { time_hr: 3.6, growth_rate_dndt: 94.5 },
-        { time_hr: 4.2, growth_rate_dndt: 46.2 }
+      derivative_curve: [
+        { time_hr: 0.5, dN_dt: 16.5 },
+        { time_hr: 1.0, dN_dt: 40.2 },
+        { time_hr: 1.5, dN_dt: 75.8 },
+        { time_hr: 2.0, dN_dt: 104.0 },
+        { time_hr: 2.5, dN_dt: 110.5 },
+        { time_hr: 3.0, dN_dt: 92.4 },
+        { time_hr: 3.5, dN_dt: 65.1 },
+        { time_hr: 4.0, dN_dt: 35.8 },
+        { time_hr: 4.5, dN_dt: 19.4 }
       ]
     };
   },
-
   getPreviewBatches() {
     return [
       {
-        id: 'batch-archive-001',
-        batch_name: 'S. cerevisiae High-Gravity Fermentation',
-        scientist_name: 'Dr. Sarah Lin',
-        organism: 'Saccharomyces cerevisiae',
-        broth_type: 'YPD + 5% Dextrose',
-        started_at: new Date(Date.now() - 28 * 3600000).toISOString(),
-        stopped_at: new Date(Date.now() - 20 * 3600000).toISOString(),
-        status: 'completed',
-        peak_turbidity: 792.4,
-        peak_gas: 2894.0,
+        id: "batch-past-001",
+        batch_name: "Yeast Kinetics Calibration Batch #01",
+        scientist_name: "Dr. A. Sharma",
+        organism: "S. cerevisiae (Standard Strain)",
+        broth_type: "YPD Nutrient Broth",
+        started_at: new Date(Date.now() - 48 * 3600000).toISOString(),
+        stopped_at: new Date(Date.now() - 40 * 3600000).toISOString(),
+        status: "completed",
+        peak_turbidity: 792.0,
+        peak_gas: 2450.0,
         harvest_delay_minutes: 0,
-        notes: 'Harvested precisely at stationary inflection.'
+        notes: "Successful calibration run. Clean stationary inflection."
       },
       {
-        id: 'batch-archive-002',
-        batch_name: 'Log-Phase Substrate Trial #02',
-        scientist_name: 'IDEA Lab Team A',
-        organism: 'S. cerevisiae ATCC 9763',
-        broth_type: 'Standard YPD Broth',
-        started_at: new Date(Date.now() - 50 * 3600000).toISOString(),
-        stopped_at: new Date(Date.now() - 45.5 * 3600000).toISOString(),
-        status: 'completed',
-        peak_turbidity: 618.0,
-        peak_gas: 2240.0,
-        harvest_delay_minutes: 10,
-        notes: 'Baseline calibration trial.'
+        id: "batch-past-002",
+        batch_name: "High Carbon Substrate Run #02",
+        scientist_name: "Research Team A",
+        organism: "S. cerevisiae (High Osmotolerant)",
+        broth_type: "Glucose-Enriched Broth (4% w/v)",
+        started_at: new Date(Date.now() - 24 * 3600000).toISOString(),
+        stopped_at: new Date(Date.now() - 17 * 3600000).toISOString(),
+        status: "completed",
+        peak_turbidity: 845.0,
+        peak_gas: 2910.0,
+        harvest_delay_minutes: 12,
+        notes: "Substrate depleted at 6.8h. Gas generation peaked at 2910 PPM."
       }
     ];
   }
@@ -149,11 +138,12 @@ const Api = {
       this.isOffline = false;
       return data;
     } catch (err) {
+      console.warn('Backend server offline or unreachable. Using interactive preview mode.', err);
       this.isOffline = true;
       return {
         status: 'offline_preview',
-        app_name: 'Bioprocess Monitoring & Prediction',
-        supabase: { status: 'unconfigured', message: 'Backend unreachable' },
+        app_name: 'Bioprocess Monitoring & Prediction (Preview Mode)',
+        supabase: { status: 'unconfigured', message: 'Connect Render Backend to link Supabase' },
         is_supabase_configured: false,
         error: err.message
       };
@@ -170,7 +160,7 @@ const Api = {
       return await res.json();
     } catch (err) {
       const hist = MockData.getPreviewHistory();
-      return { data: hist[hist.length - 1], source: 'offline_preview' };
+      return hist[hist.length - 1];
     }
   },
 
@@ -184,7 +174,7 @@ const Api = {
       return await res.json();
     } catch (err) {
       const pts = MockData.getPreviewHistory();
-      return { count: pts.length, source: 'offline_preview', data: pts };
+      return { count: pts.length, data: pts };
     }
   },
 
@@ -232,7 +222,19 @@ const Api = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      return { error: 'Backend server unreachable. Connect your backend endpoint first.' };
+      console.warn('Simulating batch start in offline preview');
+      return {
+        success: true,
+        batch: {
+          id: `preview-batch-${Date.now().toString(36)}`,
+          batch_name: batchData.batch_name || 'New Reaction Run',
+          scientist_name: batchData.scientist_name || 'Lead Researcher',
+          organism: batchData.organism || 'S. cerevisiae',
+          broth_type: batchData.broth_type || 'YPD Broth',
+          started_at: new Date().toISOString(),
+          status: 'active'
+        }
+      };
     }
   },
 
@@ -246,7 +248,14 @@ const Api = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      return { error: 'Backend server unreachable. Connect your backend endpoint first.' };
+      return {
+        success: true,
+        batch: {
+          batch_name: 'Current Bioprocess Run',
+          stopped_at: new Date().toISOString(),
+          harvest_delay_minutes: 0
+        }
+      };
     }
   },
 
@@ -260,9 +269,9 @@ const Api = {
       const match = batches.find(b => b.id === batchId) || batches[0];
       return {
         batch: match,
-        readings_count: 25,
+        readings_count: 20,
         readings: MockData.getPreviewHistory(),
-        analysis: MockData.getPreviewPrediction()
+        analytics: MockData.getPreviewPrediction()
       };
     }
   },
@@ -277,7 +286,7 @@ const Api = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      return { error: err.message };
+      return { message: `Preview phase set to ${phase}` };
     }
   },
 
@@ -290,7 +299,7 @@ const Api = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      return { error: err.message };
+      return { message: 'Tick generated in preview' };
     }
   },
 
@@ -308,13 +317,14 @@ const Api = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      return { error: 'Backend server offline. Connect Render backend URL first.' };
+      return { error: 'Backend server offline. Please connect Render backend first.' };
     }
   },
 
   setBackendUrl(url) {
     if (url && url.trim()) {
-      localStorage.setItem('BIOPROCESS_API_BASE', url.trim().replace(/\/+$/, ''));
+      const cleanUrl = url.trim().replace(/\/+$/, '');
+      localStorage.setItem('BIOPROCESS_API_BASE', cleanUrl);
     } else {
       localStorage.removeItem('BIOPROCESS_API_BASE');
     }

@@ -234,7 +234,9 @@ function setupEventListeners() {
     });
   }
 
-  // 7. Quick Backend Connector & Cloud Settings Modal
+  // -------------------------------------------------------------
+  // SUPABASE & BACKEND SETTINGS MODAL
+  // -------------------------------------------------------------
   const openModalBtn = document.getElementById('openSettingsBtn');
   const closeModalBtn = document.getElementById('closeModalBtn');
   const settingsModal = document.getElementById('settingsModal');
@@ -243,8 +245,42 @@ function setupEventListeners() {
   const quickConnectBtn = document.getElementById('quickConnectBackendBtn');
   const backendApiUrlInput = document.getElementById('backendApiUrlInput');
 
+  // Quick Backend Connector in top offline banner
+  const quickBackendInput = document.getElementById('quickBackendUrlInput');
+  const quickConnectBtn = document.getElementById('quickConnectBackendBtn');
+  const backendApiUrlInput = document.getElementById('backendApiUrlInput');
+
   if (quickBackendInput && Api.getBackendUrl()) {
     quickBackendInput.value = Api.getBackendUrl();
+  }
+  if (backendApiUrlInput && Api.getBackendUrl()) {
+    backendApiUrlInput.value = Api.getBackendUrl();
+  }
+
+  const handleConnectBackend = (url) => {
+    if (!url || !url.trim()) {
+      Api.setBackendUrl('');
+      alert('Reset to default backend URL. Reloading...');
+      location.reload();
+      return;
+    }
+    const clean = url.trim().replace(/\/+$/, '');
+    Api.setBackendUrl(clean);
+    alert(`Connected to backend: ${clean}\nReloading research dashboard...`);
+    location.reload();
+  };
+
+  if (quickConnectBtn && quickBackendInput) {
+    quickConnectBtn.addEventListener('click', () => {
+      handleConnectBackend(quickBackendInput.value);
+    });
+  }
+
+  if (openModalBtn && settingsModal) {
+    openModalBtn.addEventListener('click', () => {
+      if (backendApiUrlInput) backendApiUrlInput.value = Api.getBackendUrl();
+      settingsModal.classList.remove('hidden');
+    });
   }
   if (backendApiUrlInput && Api.getBackendUrl()) {
     backendApiUrlInput.value = Api.getBackendUrl();
@@ -275,17 +311,11 @@ function setupEventListeners() {
       const backendUrl = backendApiUrlInput ? backendApiUrlInput.value.trim() : '';
       const statusDiv = document.getElementById('configTestStatus');
 
-      const backendChanged = backendUrl !== Api.getBackendUrl();
-      if (backendChanged) {
+      if (backendUrl !== Api.getBackendUrl()) {
         Api.setBackendUrl(backendUrl);
-        if (!url || !key) {
-          showToast('Backend URL Saved', 'Reloading dashboard against updated endpoint.', 'success');
-          setTimeout(() => location.reload(), 650);
-          return;
-        }
       }
 
-      statusDiv.innerHTML = '<span class="text-sky-400">Verifying Supabase credentials...</span>';
+      statusDiv.innerHTML = '<span class="text-blue-400">Testing connection...</span>';
       const res = await Api.saveSupabaseConfig(url, key, table);
 
       if (res.success) {
@@ -347,10 +377,14 @@ async function refreshDashboard() {
     currentActiveBatch = activeBatchRes?.data || null;
     cachedBatchesList = batchesRes?.data || [];
 
+    // Toggle offline connection banner
     const offlineBanner = document.getElementById('backendOfflineBanner');
     if (offlineBanner) {
-      if (Api.isOffline) offlineBanner.classList.remove('hidden');
-      else offlineBanner.classList.add('hidden');
+      if (Api.isOffline) {
+        offlineBanner.classList.remove('hidden');
+      } else {
+        offlineBanner.classList.add('hidden');
+      }
     }
 
     updateActiveBatchBanner(currentActiveBatch);
