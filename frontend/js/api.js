@@ -61,34 +61,35 @@ const MockData = {
         peak_turbidity: latest.turbidity,
         peak_gas: latest.gas,
         batch_duration_hours: 4.2,
+        batch_duration_minutes: 252,
+        batch_duration_formatted: "4h 12m",
         total_readings: history.length,
-        carrying_capacity_k: 760.0
+        predicted_carrying_capacity_K: 760.0
       },
       phase_milestones: {
         inoculation_start: { timestamp: history[0].created_at, turbidity: 105.0, ph: 7.05 },
         log_acceleration: { timestamp: history[6].created_at, time_hr: 1.2, turbidity: 220.0, growth_rate: 64.0 },
-        maximum_inflection: { timestamp: history[13].created_at, time_hr: 2.5, turbidity: 470.0, max_rate: 110.5 },
-        peak_harvest_target: { timestamp: new Date(Date.now() + 1.8 * 3600000).toISOString(), projected_time_hr: 6.0, estimated_turbidity: 755.0, recommendation: "Harvest when rate drops < 15 NTU/h" },
-        harvest_stop_actual: null,
-        death_decay_onset: null
+        peak_biomass: { timestamp: history[13].created_at, time_hr: 2.5, turbidity: 470.0 },
+        harvest_window: { timestamp: new Date(Date.now() + 1.8 * 3600000).toISOString(), time_hr: 6.0, status: "Optimal Harvest Window" },
+        decline_death: null
       },
       predicted_projection: [
-        { time_hr: 4.5, projected_turbidity: 710.0 },
-        { time_hr: 5.0, projected_turbidity: 738.0 },
-        { time_hr: 5.5, projected_turbidity: 752.0 },
-        { time_hr: 6.0, projected_turbidity: 758.0 },
-        { time_hr: 6.5, projected_turbidity: 760.0 }
+        { time_hr: 4.5, predicted_turbidity: 710.0 },
+        { time_hr: 5.0, predicted_turbidity: 738.0 },
+        { time_hr: 5.5, predicted_turbidity: 752.0 },
+        { time_hr: 6.0, predicted_turbidity: 758.0 },
+        { time_hr: 6.5, predicted_turbidity: 760.0 }
       ],
-      derivative_curve: [
-        { time_hr: 0.5, dN_dt: 16.5 },
-        { time_hr: 1.0, dN_dt: 40.2 },
-        { time_hr: 1.5, dN_dt: 75.8 },
-        { time_hr: 2.0, dN_dt: 104.0 },
-        { time_hr: 2.5, dN_dt: 110.5 },
-        { time_hr: 3.0, dN_dt: 92.4 },
-        { time_hr: 3.5, dN_dt: 65.1 },
-        { time_hr: 4.0, dN_dt: 35.8 },
-        { time_hr: 4.5, dN_dt: 19.4 }
+      growth_rate_series: [
+        { time_hr: 0.5, growth_rate_dndt: 16.5 },
+        { time_hr: 1.0, growth_rate_dndt: 40.2 },
+        { time_hr: 1.5, growth_rate_dndt: 75.8 },
+        { time_hr: 2.0, growth_rate_dndt: 104.0 },
+        { time_hr: 2.5, growth_rate_dndt: 110.5 },
+        { time_hr: 3.0, growth_rate_dndt: 92.4 },
+        { time_hr: 3.5, growth_rate_dndt: 65.1 },
+        { time_hr: 4.0, growth_rate_dndt: 35.8 },
+        { time_hr: 4.5, growth_rate_dndt: 19.4 }
       ]
     };
   },
@@ -160,7 +161,7 @@ const Api = {
       return await res.json();
     } catch (err) {
       const hist = MockData.getPreviewHistory();
-      return hist[hist.length - 1];
+      return { data: hist[hist.length - 1], source: 'offline_preview' };
     }
   },
 
@@ -269,9 +270,9 @@ const Api = {
       const match = batches.find(b => b.id === batchId) || batches[0];
       return {
         batch: match,
-        readings_count: 20,
+        readings_count: 23,
         readings: MockData.getPreviewHistory(),
-        analytics: MockData.getPreviewPrediction()
+        analysis: MockData.getPreviewPrediction()
       };
     }
   },

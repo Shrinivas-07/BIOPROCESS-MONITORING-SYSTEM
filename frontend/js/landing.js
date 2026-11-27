@@ -1,6 +1,6 @@
 /**
- * Kinetic.Bio Landing Page Controller
- * Powers the interactive bioreactor kinetic scrubber, phase scrollytelling SVG highlight, and navigation
+ * Bioprocess Landing Page Controller
+ * Powers interactive culture scrubber, scrollytelling steps, and micro-interactions
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // -------------------------------------------------------------
-// 1. INTERACTIVE BIOREACTOR KINETIC SCRUBBER
+// 1. INTERACTIVE BIOPROCESS SCRUBBER SANDBOX
 // -------------------------------------------------------------
 function initCultureScrubber() {
   const slider = document.getElementById('scrubberSlider');
@@ -19,7 +19,6 @@ function initCultureScrubber() {
   const tempDisplay = document.getElementById('scrubberTempDisplay');
   const phDisplay = document.getElementById('scrubberPhDisplay');
   const gasDisplay = document.getElementById('scrubberGasDisplay');
-  const rateDisplay = document.getElementById('scrubberRateDisplay');
   const phasePill = document.getElementById('scrubberPhasePill');
   const recoDisplay = document.getElementById('scrubberRecoDisplay');
   const flaskLiquid = document.getElementById('flaskLiquid');
@@ -27,95 +26,84 @@ function initCultureScrubber() {
   if (!slider) return;
 
   function updateScrubber(tHr) {
-    if (timeDisplay) {
-      const totalMins = Math.round(tHr * 60);
-      const h = Math.floor(totalMins / 60);
-      const m = totalMins % 60;
-      timeDisplay.innerText = `${tHr.toFixed(1)} h (${h}h ${m}m)`;
-    }
+    if (timeDisplay) timeDisplay.innerText = `${tHr.toFixed(1)} Hours`;
 
-    // Sigmoidal Kinetic Parameters
-    const K = 795.0;   // Carrying capacity (NTU)
-    const N0 = 105.0;  // Inoculum baseline (NTU)
-    const r = 0.85;    // Specific growth coefficient
-    const t0 = 4.2;    // Inflection midpoint (hours)
+    // Biological growth math (Sigmoidal parameters)
+    const K = 795.0;   // Carrying capacity
+    const N0 = 105.0;  // Baseline turbidity
+    const r = 0.85;    // Growth rate
+    const t0 = 4.2;    // Inflection point (hours)
 
-    // 1. Optical Turbidity & Analytic Slope dN/dt
-    const expTerm = Math.exp(-r * (tHr - t0));
-    let turbidity = N0 + (K - N0) / (1.0 + expTerm);
-    let dNdt = ((K - N0) * r * expTerm) / Math.pow(1.0 + expTerm, 2);
-
+    // 1. Turbidity
+    let turbidity = N0 + (K - N0) / (1.0 + Math.exp(-r * (tHr - t0)));
     if (tHr > 9.5) {
-      turbidity -= (tHr - 9.5) * 35.0;
-      dNdt = -35.0;
+      turbidity -= (tHr - 9.5) * 35.0; // Decline in death phase
     }
     turbidity = Math.max(N0, Math.round(turbidity * 10) / 10);
-    dNdt = Math.round(dNdt * 10) / 10;
 
-    // 2. Exothermic Thermal Shift
-    const tempBoost = tHr < 8.0 ? 0.4 * (1.0 / (1.0 + expTerm)) : 0.0;
-    const temp = Math.round((31.2 + tempBoost) * 10) / 10;
+    // 2. Temperature
+    const tempBoost = tHr < 8.0 ? 0.4 * (1.0 / (1.0 + Math.exp(-r * (tHr - t0)))) : 0.0;
+    const temp = Math.round((30.1 + tempBoost) * 10) / 10;
 
-    // 3. Broth Acidification (pH 7.10 -> 5.45)
+    // 3. pH (Drops from 7.10 down to 5.45)
     const growthFrac = Math.min(1.0, Math.max(0.0, (turbidity - N0) / (K - N0)));
     const ph = Math.round((7.10 - (1.65 * growthFrac)) * 100) / 100;
 
-    // 4. Headspace CO2 Evolution (PPM)
-    let gas = 420.0 + (2480.0 * growthFrac);
+    // 4. Headspace Gas (Surges from 420 to 2900 PPM)
+    let gas = 420.0 + (2500.0 * growthFrac);
     if (tHr > 9.5) {
       gas -= (tHr - 9.5) * 200.0;
     }
     gas = Math.round(Math.max(400.0, gas));
 
-    // Update Telemetry Readouts
+    // Update displays
     if (turbDisplay) turbDisplay.innerText = `${turbidity.toFixed(1)} NTU`;
     if (tempDisplay) tempDisplay.innerText = `${temp.toFixed(1)} °C`;
     if (phDisplay) phDisplay.innerText = `${ph.toFixed(2)}`;
     if (gasDisplay) gasDisplay.innerText = `${gas} PPM`;
-    if (rateDisplay) rateDisplay.innerText = `${dNdt >= 0 ? '+' : ''}${dNdt.toFixed(1)} NTU/hr`;
 
-    // Determine Growth Phase & Advisory
+    // 5. Phase determination & UI styling
     let phaseText = '';
     let phaseClass = '';
     let recoText = '';
 
     if (tHr < 2.0) {
-      phaseText = 'PHASE I · LAG (ADAPTATION)';
+      phaseText = 'LAG PHASE';
       phaseClass = 'badge-lag';
-      recoText = 'Cells synthesizing metabolic enzymes for nutrient uptake. Division rate near zero; maintain thermal stability.';
+      recoText = 'Microorganisms adjusting to nutrient medium. Cell division minimal; enzyme induction in progress.';
       if (flaskLiquid) {
-        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(59, 130, 246, 0.22) 0%, rgba(30, 64, 175, 0.42) 100%)';
+        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(234, 179, 8, 0.25) 0%, rgba(202, 138, 4, 0.45) 100%)';
         flaskLiquid.style.filter = 'blur(0px)';
       }
     } else if (tHr < 7.5) {
-      phaseText = 'PHASE II · LOG (EXPONENTIAL)';
+      phaseText = 'LOG (EXPONENTIAL)';
       phaseClass = 'badge-log';
-      recoText = 'Balanced exponential binary fission active. Turbidity and CO2 off-gassing rising rapidly; monitor substrate pH drift.';
+      recoText = 'Rapid binary fission active. Turbidity & CO₂ production soaring. Maintain aeration and incubation temperature.';
       if (flaskLiquid) {
-        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(16, 185, 129, 0.38) 0%, rgba(5, 150, 105, 0.68) 100%)';
-        flaskLiquid.style.filter = 'blur(0.7px)';
+        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(16, 185, 129, 0.4) 0%, rgba(13, 148, 136, 0.7) 100%)';
+        flaskLiquid.style.filter = 'blur(1px)';
       }
     } else if (tHr <= 9.3) {
-      phaseText = 'PHASE III · STATIONARY (PEAK)';
+      phaseText = 'STATIONARY (PEAK)';
       phaseClass = 'badge-stationary';
-      recoText = 'HARVEST WINDOW REACHED: Biomass saturated near carrying capacity (K) and dN/dt approaches 0. Collect batch sample now for peak yield.';
+      recoText = '⚠️ OPTIMAL HARVEST WINDOW! Maximum biomass carrying capacity reached. First derivative dN/dt → 0. Harvest now!';
       if (flaskLiquid) {
-        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(245, 158, 11, 0.5) 0%, rgba(180, 83, 9, 0.82) 100%)';
-        flaskLiquid.style.filter = 'blur(1.5px)';
+        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(245, 158, 11, 0.6) 0%, rgba(217, 119, 6, 0.85) 100%)';
+        flaskLiquid.style.filter = 'blur(2px)';
       }
     } else {
-      phaseText = 'PHASE IV · DECLINE / LYSIS';
+      phaseText = 'DEATH / DECLINE';
       phaseClass = 'badge-death';
-      recoText = 'Carbon depletion and organic acid toxicity triggering cell autolysis. Terminate reactor immediately to preserve product integrity.';
+      recoText = 'Substrates depleted. Toxic metabolite accumulation causes cell lysis. Harvest immediately or dump batch.';
       if (flaskLiquid) {
-        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(239, 68, 68, 0.45) 0%, rgba(153, 27, 27, 0.8) 100%)';
-        flaskLiquid.style.filter = 'blur(1.2px)';
+        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(239, 68, 68, 0.5) 0%, rgba(185, 28, 28, 0.8) 100%)';
+        flaskLiquid.style.filter = 'blur(1.5px)';
       }
     }
 
     if (phasePill) {
       phasePill.innerText = phaseText;
-      phasePill.className = `px-3 py-1 rounded text-[11px] font-semibold uppercase tracking-wider mono-font ${phaseClass}`;
+      phasePill.className = `px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${phaseClass}`;
     }
     if (recoDisplay) {
       recoDisplay.innerText = recoText;
@@ -123,44 +111,20 @@ function initCultureScrubber() {
   }
 
   slider.addEventListener('input', (e) => {
-    updateScrubber(parseFloat(e.target.value));
+    const val = parseFloat(e.target.value);
+    updateScrubber(val);
   });
 
+  // Initial trigger at 4.5 hours (mid log)
   updateScrubber(4.5);
 }
 
 // -------------------------------------------------------------
-// 2. SCROLLYTELLING WITH INTERACTIVE SIGMOID SVG REGION HIGHLIGHT
+// 2. SCROLLYTELLING INTERSECTION OBSERVER
 // -------------------------------------------------------------
 function initScrollytelling() {
   const steps = document.querySelectorAll('.step-card');
   if (!steps || steps.length === 0) return;
-
-  function highlightPhaseSvg(stepNum) {
-    const phaseMeta = {
-      '1': { label: 'Phase I: Lag Adaptation', color: '#3b82f6', cx: 52, cy: 132 },
-      '2': { label: 'Phase II: Exponential Velocity', color: '#10b981', cx: 148, cy: 84 },
-      '3': { label: 'Phase III: Stationary Plateau', color: '#f59e0b', cx: 245, cy: 32 },
-      '4': { label: 'Phase IV: Cell Autolysis', color: '#ef4444', cx: 325, cy: 56 }
-    }[stepNum];
-
-    const dot = document.getElementById('svgPhaseMarker');
-    const halo = document.getElementById('svgPhaseHalo');
-    const tag = document.getElementById('svgActivePhaseTag');
-
-    if (phaseMeta && dot && halo) {
-      dot.setAttribute('cx', phaseMeta.cx);
-      dot.setAttribute('cy', phaseMeta.cy);
-      dot.setAttribute('fill', phaseMeta.color);
-      halo.setAttribute('cx', phaseMeta.cx);
-      halo.setAttribute('cy', phaseMeta.cy);
-      halo.setAttribute('stroke', phaseMeta.color);
-    }
-    if (phaseMeta && tag) {
-      tag.innerText = phaseMeta.label;
-      tag.style.color = phaseMeta.color;
-    }
-  }
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -168,21 +132,13 @@ function initScrollytelling() {
         if (entry.isIntersecting) {
           steps.forEach((s) => s.classList.remove('active-step'));
           entry.target.classList.add('active-step');
-          highlightPhaseSvg(entry.target.dataset.step);
         }
       });
     },
-    { threshold: 0.55 }
+    { threshold: 0.6 }
   );
 
-  steps.forEach((step) => {
-    observer.observe(step);
-    step.addEventListener('click', () => {
-      steps.forEach((s) => s.classList.remove('active-step'));
-      step.classList.add('active-step');
-      highlightPhaseSvg(step.dataset.step);
-    });
-  });
+  steps.forEach((step) => observer.observe(step));
 }
 
 // -------------------------------------------------------------
@@ -202,3 +158,4 @@ function initSmoothScroll() {
     });
   });
 }
+

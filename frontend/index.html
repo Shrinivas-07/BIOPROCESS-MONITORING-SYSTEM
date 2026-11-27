@@ -3,56 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kinetic.Bio | Bioprocess Telemetry &amp; Predictive Harvest Analytics</title>
+  <title>Bioprocess AI | IoT Microbial Monitoring & Growth Prediction</title>
+  
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Landing Page Styling -->
   <link rel="stylesheet" href="css/landing.css">
 </head>
 <body class="min-h-screen">
 
-  <!-- Subtle Blueprint Engineering Grid -->
-  <div class="tech-grid-bg"></div>
+  <!-- Ambient Dynamic Gradient Mesh -->
+  <div class="mesh-gradient"></div>
 
   <!-- ============================================================== -->
-  <!-- 1. TOP APPLICATION HEADER                                      -->
+  <!-- 1. STICKY TOP NAVIGATION BAR -->
   <!-- ============================================================== -->
-  <header class="sticky top-0 z-50 bg-[#080b0f]/90 backdrop-blur-md border-b border-[#1e2733]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#070a11]/80 border-b border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <!-- Brand Identity -->
+      <!-- Brand Logo -->
       <a href="/" class="flex items-center space-x-3 group">
-        <div class="w-9 h-9 rounded-lg bg-[#0f141b] border border-[#334155] flex items-center justify-center text-emerald-400 group-hover:border-emerald-500/60 transition-colors">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 2v7.31L4.67 19.16A2 2 0 0 0 6.42 22h11.16a2 2 0 0 0 1.75-2.84L14 9.31V2"/>
-            <path d="M8.5 2h7"/>
-            <path d="M7 16h10"/>
-          </svg>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+          🧪
         </div>
         <div>
-          <span class="text-sm font-bold tracking-tight text-slate-100 block leading-none">
-            KINETIC<span class="text-emerald-400">.BIO</span>
+          <span class="text-lg font-black tracking-tight text-white block">
+            BIOPROCESS<span class="text-cyan-400">.AI</span>
           </span>
-          <span class="text-[10px] uppercase tracking-[0.14em] text-slate-500 font-medium block mt-1 mono-font">
-            AICTE IDEA Lab · Process Telemetry
+          <span class="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold block">
+            AICTE IDEA Lab Project
           </span>
         </div>
       </a>
 
-      <!-- Anchor Navigation -->
-      <nav class="hidden md:flex items-center space-x-8 text-xs font-medium text-slate-400">
-        <a href="#overview" class="hover:text-slate-100 transition-colors">System Overview</a>
-        <a href="#architecture" class="hover:text-slate-100 transition-colors">Pipeline</a>
-        <a href="#scrollytelling" class="hover:text-slate-100 transition-colors">Growth Kinetics</a>
-        <a href="#scrubber" class="hover:text-slate-100 transition-colors">Vessel Sandbox</a>
-        <a href="#hardware" class="hover:text-slate-100 transition-colors">Instrumentation</a>
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-gray-300">
+        <a href="#overview" class="hover:text-emerald-400 transition-colors">Overview</a>
+        <a href="#scrollytelling" class="hover:text-emerald-400 transition-colors">Microbial Phases</a>
+        <a href="#scrubber" class="hover:text-emerald-400 transition-colors">Culture Scrubber</a>
+        <a href="#hardware" class="hover:text-emerald-400 transition-colors">IoT Hardware</a>
+        <a href="#architecture" class="hover:text-emerald-400 transition-colors">Data Pipeline</a>
       </nav>
 
-      <!-- Primary Entry Action -->
+      <!-- Primary Action CTA -->
       <div class="flex items-center space-x-3">
-        <a href="/research" class="btn-primary px-4 py-2 rounded-lg text-xs inline-flex items-center space-x-2">
-          <span>Open Research Console</span>
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-          </svg>
+        <a href="/research" class="btn-primary px-5 py-2.5 rounded-xl text-xs flex items-center space-x-2">
+          <span>Enter Research Studio</span>
+          <span>→</span>
         </a>
       </div>
 
@@ -60,223 +58,131 @@
   </header>
 
   <!-- ============================================================== -->
-  <!-- 2. HERO SECTION (ASYMMETRIC ENGINEERING WORKSTATION OVERVIEW)  -->
+  <!-- 2. HERO SECTION WITH PARALLAX & MICRO-INTERACTIONS -->
   <!-- ============================================================== -->
-  <section id="overview" class="relative pt-14 pb-20 md:pt-20 md:pb-24 z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-        <!-- Left Column: Thesis & Technical Spec Strip -->
-        <div class="lg:col-span-7 space-y-6">
-          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded bg-[#0f141b] border border-[#1e2733] text-[11px] font-medium text-slate-300 mono-font">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span>ESP32 EDGE TELEMETRY · SUPABASE POSTGRESQL · SCIPY SOLVER</span>
-          </div>
-
-          <h1 class="text-3xl sm:text-5xl font-bold text-slate-50 tracking-tight leading-[1.12]">
-            Automated bioprocess monitoring &amp; <span class="text-slate-400">predictive harvest control.</span>
-          </h1>
-
-          <p class="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl">
-            An integrated cyber-physical culture monitoring platform connecting submerged vessel instrumentation to cloud analytics. Streams live <strong class="text-slate-200 font-medium">Optical Turbidity</strong>, <strong class="text-slate-200 font-medium">Temperature</strong>, <strong class="text-slate-200 font-medium">pH Acidity</strong>, and <strong class="text-slate-200 font-medium">Headspace CO<sub>2</sub></strong> readings over ESP32, fitting non-linear logistic kinetics to pinpoint peak stationary harvest before autolysis.
-          </p>
-
-          <div class="flex flex-wrap items-center gap-3 pt-2">
-            <a href="/research" class="btn-primary px-6 py-3 rounded-lg text-xs inline-flex items-center space-x-2">
-              <span>Launch Research Console</span>
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-              </svg>
-            </a>
-            <a href="#scrubber" class="btn-secondary px-5 py-3 rounded-lg text-xs inline-flex items-center space-x-2">
-              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="4" x2="20" y1="12" y2="12"/><polyline points="10 18 4 12 10 6"/><polyline points="14 6 20 12 14 18"/>
-              </svg>
-              <span>Interactive Vessel Sandbox</span>
-            </a>
-          </div>
-
-          <!-- Technical Specification Strip (Divided by Hairlines) -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 pt-6 border-t border-[#1e2733] gap-y-4">
-            <div class="pr-4 sm:border-r border-[#1e2733]">
-              <div class="text-lg font-bold text-slate-100 mono-font">4 Channels</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">NTU · °C · pH · CO<sub>2</sub></div>
-            </div>
-            <div class="sm:px-4 sm:border-r border-[#1e2733]">
-              <div class="text-lg font-bold text-emerald-400 mono-font">5–10 sec</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">Telemetry cadence</div>
-            </div>
-            <div class="pr-4 sm:px-4 sm:border-r border-[#1e2733]">
-              <div class="text-lg font-bold text-sky-400 mono-font"><i>dN</i>/<i>dt</i></div>
-              <div class="text-[11px] text-slate-500 mt-0.5">Logistic inflection fit</div>
-            </div>
-            <div class="sm:pl-4">
-              <div class="text-lg font-bold text-slate-100 mono-font">UUID Audit</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">Full batch traceability</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column: Miniature Instrument Monitor Frame -->
-        <div class="lg:col-span-5">
-          <div class="instrument-panel overflow-hidden shadow-2xl">
-            <!-- Window Top Bar -->
-            <div class="px-4 py-2.5 bg-[#151c26] border-b border-[#1e2733] flex items-center justify-between">
-              <div class="flex items-center space-x-2 text-[11px] mono-font text-slate-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>VESSEL-01 // TELEMETRY PREVIEW</span>
-              </div>
-              <span class="text-[10px] mono-font px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                LOG PHASE
-              </span>
-            </div>
-
-            <div class="p-5 space-y-4">
-              <!-- Live Miniature SVG Logistic Curve -->
-              <div class="bg-[#080b0f] border border-[#1e2733] rounded-lg p-3.5">
-                <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2 mono-font">
-                  <span>BIOMASS DENSITY N(t)</span>
-                  <span class="text-emerald-400">R² = 0.994</span>
-                </div>
-                <svg class="w-full h-32" viewBox="0 0 360 110" fill="none">
-                  <!-- Subtle Gridlines -->
-                  <line x1="0" y1="25" x2="360" y2="25" stroke="#1e2733" stroke-dasharray="3 3"/>
-                  <line x1="0" y1="55" x2="360" y2="55" stroke="#1e2733" stroke-dasharray="3 3"/>
-                  <line x1="0" y1="85" x2="360" y2="85" stroke="#1e2733" stroke-dasharray="3 3"/>
-                  <!-- Projected Asymptote Curve -->
-                  <path d="M 10 95 C 70 94, 110 90, 155 55 C 195 24, 240 16, 350 15" stroke="#0ea5e9" stroke-width="1.75" stroke-dasharray="5 4" opacity="0.75"/>
-                  <!-- Measured Series -->
-                  <path d="M 10 95 C 70 94, 110 89, 155 55 C 175 40, 195 28, 220 22" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
-                  <!-- Current Operating Point -->
-                  <circle cx="220" cy="22" r="4" fill="#10b981"/>
-                  <circle cx="220" cy="22" r="8" stroke="#10b981" stroke-opacity="0.35" stroke-width="2"/>
-                </svg>
-                <div class="flex justify-between text-[10px] text-slate-500 mono-font mt-1">
-                  <span>t = 0h 00m</span>
-                  <span>Inflection (t₀)</span>
-                  <span>Peak Plateau (K)</span>
-                </div>
-              </div>
-
-              <!-- Compact Channel Telemetry Table -->
-              <div class="grid grid-cols-2 gap-2.5 text-xs">
-                <div class="bg-[#151c26] border border-[#1e2733] rounded-lg p-3">
-                  <div class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Optical Turbidity</div>
-                  <div class="text-base font-bold text-slate-100 mono-font mt-1">495.2 NTU</div>
-                </div>
-                <div class="bg-[#151c26] border border-[#1e2733] rounded-lg p-3">
-                  <div class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Temperature</div>
-                  <div class="text-base font-bold text-orange-400 mono-font mt-1">31.8 °C</div>
-                </div>
-                <div class="bg-[#151c26] border border-[#1e2733] rounded-lg p-3">
-                  <div class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Broth pH</div>
-                  <div class="text-base font-bold text-violet-400 mono-font mt-1">6.14 pH</div>
-                </div>
-                <div class="bg-[#151c26] border border-[#1e2733] rounded-lg p-3">
-                  <div class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Headspace CO<sub>2</sub></div>
-                  <div class="text-base font-bold text-cyan-400 mono-font mt-1">2,140 PPM</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+  <section id="overview" class="relative pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+      
+      <!-- Pill Badge -->
+      <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold tracking-wide">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>AICTE IDEA Lab 1st Semester Student Group Project</span>
       </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] max-w-5xl mx-auto">
+        Continuous Bioprocess Telemetry & <br class="hidden sm:inline" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500">
+          Predictive Growth Analytics
+        </span>
+      </h1>
+
+      <!-- Subtitle Description -->
+      <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-400 font-normal leading-relaxed">
+        An autonomous laboratory cyber-physical system connecting a culture flask to the cloud. Continuously monitors <strong>Optical Turbidity</strong>, <strong>Temperature</strong>, <strong>pH Acidity</strong>, and <strong>Off-Gas Respiration ($CO_2$)</strong> via ESP32, storing relational batch data in <strong>Supabase</strong> and fitting mathematical sigmoidal equations to recommend the exact harvest window.
+      </p>
+
+      <!-- Call to Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+        <a href="/research" class="btn-primary px-8 py-3.5 rounded-xl text-sm shadow-xl shadow-emerald-500/20">
+          Launch Live Research Studio →
+        </a>
+        <a href="#scrubber" class="btn-secondary px-6 py-3.5 rounded-xl text-sm font-semibold">
+          Try Interactive Culture Scrubber ↓
+        </a>
+      </div>
+
+      <!-- Quick Metrics Counter Preview -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-10">
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-white mono-font">4</div>
+          <div class="text-xs text-gray-400 mt-1">Submerged & Gas Sensors</div>
+        </div>
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mono-font">5-10s</div>
+          <div class="text-xs text-gray-400 mt-1">IoT Telemetry Interval</div>
+        </div>
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-cyan-400 mono-font">dN/dt</div>
+          <div class="text-xs text-gray-400 mt-1">Sigmoidal Rate Engine</div>
+        </div>
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-purple-400 mono-font">100%</div>
+          <div class="text-xs text-gray-400 mt-1">Batch Traceability</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <!-- ============================================================== -->
-  <!-- 3. HORIZONTAL ARCHITECTURE PIPELINE RAIL                       -->
+  <!-- 3. HORIZONTAL SCROLLING FEATURE RAIL -->
   <!-- ============================================================== -->
-  <section id="architecture" class="py-14 border-y border-[#1e2733] bg-[#0b0f16] relative z-10">
+  <section class="py-12 border-y border-white/5 bg-[#0a0f1d]/50 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+      <div class="flex items-center justify-between mb-4">
         <div>
-          <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-400 mono-font">System Architecture</span>
-          <h2 class="text-xl sm:text-2xl font-bold text-slate-100 mt-1">End-to-End Bioprocess Data Pipeline</h2>
+          <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400">Key System Highlights</h2>
+          <p class="text-lg font-extrabold text-white">Full-Stack Interdisciplinary Architecture</p>
         </div>
-        <span class="text-[11px] text-slate-500 mono-font">Scroll horizontally to inspect stack →</span>
+        <span class="text-xs text-gray-500 hidden sm:inline">← Drag / Scroll horizontally →</span>
       </div>
 
+      <!-- Horizontal Card Track -->
       <div class="horizontal-scroll-container">
         
-        <!-- Module 01 -->
-        <div class="horizontal-scroll-card instrument-panel instrument-panel-interactive p-5 space-y-3 border-t-2 border-t-emerald-500">
-          <div class="flex items-center justify-between">
-            <div class="w-9 h-9 rounded-lg bg-[#151c26] border border-[#263140] text-emerald-400 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>
-              </svg>
-            </div>
-            <span class="text-[11px] mono-font text-slate-500">01 / EDGE</span>
+        <!-- Rail Card 1 -->
+        <div class="horizontal-scroll-card glass-panel p-6 space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+            📡
           </div>
-          <h3 class="text-sm font-semibold text-slate-100">ESP32 Edge Microcontroller</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Deterministic acquisition firmware polling 12-bit ADC1 channels and OneWire thermal probes every 5–10 s, posting TLS-encrypted JSON telemetry packets directly to REST endpoints.
+          <h3 class="text-base font-bold text-white">ESP32 Edge Microcontroller</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Multitasking firmware reads high-precision ADC1 analog pins and OneWire digital bus. Connects over Wi-Fi or phone hotspot, posting JSON packets directly to Supabase REST.
           </p>
         </div>
 
-        <!-- Module 02 -->
-        <div class="horizontal-scroll-card instrument-panel instrument-panel-interactive p-5 space-y-3 border-t-2 border-t-sky-500">
-          <div class="flex items-center justify-between">
-            <div class="w-9 h-9 rounded-lg bg-[#151c26] border border-[#263140] text-sky-400 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>
-              </svg>
-            </div>
-            <span class="text-[11px] mono-font text-slate-500">02 / STORAGE</span>
+        <!-- Rail Card 2 -->
+        <div class="horizontal-scroll-card glass-panel p-6 space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl">
+            ⚡
           </div>
-          <h3 class="text-sm font-semibold text-slate-100">Supabase PostgreSQL Schema</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Relational time-series architecture isolating batch metadata (<code class="text-slate-300">bioprocess_batches</code>) from high-frequency sensor logs (<code class="text-slate-300">bioprocess_readings</code>) via indexed UUID foreign keys.
+          <h3 class="text-base font-bold text-white">Supabase Cloud PostgreSQL</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Enterprise relational database separating batch metadata from time-series sensor packets. Supports row-level security (RLS) and sub-second querying for real-time dashboards.
           </p>
         </div>
 
-        <!-- Module 03 -->
-        <div class="horizontal-scroll-card instrument-panel instrument-panel-interactive p-5 space-y-3 border-t-2 border-t-violet-500">
-          <div class="flex items-center justify-between">
-            <div class="w-9 h-9 rounded-lg bg-[#151c26] border border-[#263140] text-violet-400 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
-              </svg>
-            </div>
-            <span class="text-[11px] mono-font text-slate-500">03 / ANALYTICS</span>
+        <!-- Rail Card 3 -->
+        <div class="horizontal-scroll-card glass-panel p-6 space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+            📈
           </div>
-          <h3 class="text-sm font-semibold text-slate-100">SciPy Logistic Growth Engine</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Applies moving-average signal denoising, performs non-linear least-squares regression on <i>N</i>(<i>t</i>), and computes numerical derivative <i>dN</i>/<i>dt</i> to detect stationary biomass saturation.
+          <h3 class="text-base font-bold text-white">Python Mathematical Growth Engine</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Applies moving-average noise filtering, fits the logistic growth equation $N(t)$, and computes the first derivative $\frac{dN}{dt}$ to detect when cell multiplication plateaus.
           </p>
         </div>
 
-        <!-- Module 04 -->
-        <div class="horizontal-scroll-card instrument-panel instrument-panel-interactive p-5 space-y-3 border-t-2 border-t-amber-500">
-          <div class="flex items-center justify-between">
-            <div class="w-9 h-9 rounded-lg bg-[#151c26] border border-[#263140] text-amber-400 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-              </svg>
-            </div>
-            <span class="text-[11px] mono-font text-slate-500">04 / CONTROL</span>
+        <!-- Rail Card 4 -->
+        <div class="horizontal-scroll-card glass-panel p-6 space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xl">
+            ⏱️
           </div>
-          <h3 class="text-sm font-semibold text-slate-100">Harvest Adherence &amp; Audit</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Logs exact UTC/IST inoculation timestamps, fires automated harvest window advisories at inflection plateau, and computes post-peak termination variance in minutes.
+          <h3 class="text-base font-bold text-white">Batch Lifecycle & Harvest Audit</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Scientist starts reactions with custom parameters. System flags recommended harvest time, tracks user stop time, and logs exact delay adherence in minutes.
           </p>
         </div>
 
-        <!-- Module 05 -->
-        <div class="horizontal-scroll-card instrument-panel instrument-panel-interactive p-5 space-y-3 border-t-2 border-t-cyan-500">
-          <div class="flex items-center justify-between">
-            <div class="w-9 h-9 rounded-lg bg-[#151c26] border border-[#263140] text-cyan-400 flex items-center justify-center">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>
-              </svg>
-            </div>
-            <span class="text-[11px] mono-font text-slate-500">05 / ARCHIVE</span>
+        <!-- Rail Card 5 -->
+        <div class="horizontal-scroll-card glass-panel p-6 space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
+            📜
           </div>
-          <h3 class="text-sm font-semibold text-slate-100">Historical Batch Replay</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            One-click reconstruction of completed fermentations across 1m–1h timeline zoom intervals for yield comparison, QA verification, and laboratory reporting.
+          <h3 class="text-base font-bold text-white">1-Click Historical Replay</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Click on any past reaction to immediately reconstruct its entire time-series curve, derivative rate plot, and environmental shifts for audit or academic grading.
           </p>
         </div>
 
@@ -285,380 +191,304 @@
   </section>
 
   <!-- ============================================================== -->
-  <!-- 4. SCROLLYTELLING: 4 MICROBIAL GROWTH PHASES                   -->
+  <!-- 4. SCROLLYTELLING: THE 4 MICROBIAL GROWTH PHASES -->
   <!-- ============================================================== -->
   <section id="scrollytelling" class="py-20 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       
-      <div class="max-w-2xl space-y-2">
-        <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-sky-400 mono-font">Bioprocess Kinetics</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-slate-100">Four Phases of Microbial Batch Culture</h2>
-        <p class="text-sm text-slate-400">
-          Translating continuous optical density, broth acidification, and gas evolution signals into quantitative phase classification.
+      <div class="text-center space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400">Biological Fundamentals</h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-white">The 4 Phases of Microbial Batch Culture</h3>
+        <p class="text-sm text-gray-400 max-w-2xl mx-auto">
+          How our IoT sensors and Python analytics translate physical biology into predictive computational insights.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Scrollytelling Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         
-        <!-- Left: 4 Narrative Phase Step Cards -->
-        <div class="lg:col-span-6 space-y-4">
+        <!-- Left: Narrative Step Cards -->
+        <div class="space-y-6">
           
           <!-- Phase 1 -->
-          <div class="step-card instrument-panel p-5 cursor-pointer active-step" data-step="1">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center space-x-2.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase mono-font badge-lag">Phase 01</span>
-                <h3 class="text-sm font-semibold text-slate-100">Lag Phase (Metabolic Adaptation)</h3>
-              </div>
-              <span class="text-[11px] text-slate-500 mono-font"><i>dN</i>/<i>dt</i> ≈ 0</span>
+          <div class="step-card glass-panel p-6 active-step" data-step="1">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="px-2.5 py-1 rounded bg-blue-500/20 text-blue-400 text-xs font-bold uppercase">Phase 1</span>
+              <h4 class="text-lg font-bold text-white">Lag Phase (Adaptation)</h4>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Following inoculation, cells do not divide immediately. Metabolic energy is directed toward enzyme synthesis, RNA transcription, and environmental equilibrium.
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Upon inoculation, microorganisms do not divide immediately. Cells are actively synthesizing essential enzymes, ribosomes, and adapting to the nutrient medium.
             </p>
-            <div class="mt-3 pt-2.5 border-t border-[#1e2733] text-[11px] text-slate-400 flex justify-between mono-font">
-              <span>Turbidity: ~105 NTU baseline</span>
-              <span class="text-blue-400">CO<sub>2</sub>: ~420 PPM ambient</span>
+            <div class="mt-3 pt-3 border-t border-white/5 text-xs text-gray-400 flex justify-between">
+              <span>Sensor Signal: Turbidity flat (~100 NTU)</span>
+              <span class="text-blue-400 font-semibold">CO₂: Baseline ~420 PPM</span>
             </div>
           </div>
 
           <!-- Phase 2 -->
-          <div class="step-card instrument-panel p-5 cursor-pointer" data-step="2">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center space-x-2.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase mono-font badge-log">Phase 02</span>
-                <h3 class="text-sm font-semibold text-slate-100">Log Phase (Exponential Velocity)</h3>
-              </div>
-              <span class="text-[11px] text-emerald-400 mono-font"><i>μ</i> = <i>μ</i><sub>max</sub></span>
+          <div class="step-card glass-panel p-6" data-step="2">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-bold uppercase">Phase 2</span>
+              <h4 class="text-lg font-bold text-white">Log Phase (Exponential Growth)</h4>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Balanced binary fission proceeds at maximum specific growth rate (<i>μ</i><sub>max</sub>). Vigorous substrate consumption produces rapid organic acid secretion and CO<sub>2</sub> off-gassing.
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Cells multiply at maximum velocity through binary fission ($\mu_{max}$). Carbohydrate consumption produces vigorous respiration off-gassing and organic acids.
             </p>
-            <div class="mt-3 pt-2.5 border-t border-[#1e2733] text-[11px] text-slate-400 flex justify-between mono-font">
-              <span>Turbidity: Exponential surge</span>
-              <span class="text-emerald-400">pH drops; CO<sub>2</sub> &gt; 2,500 PPM</span>
+            <div class="mt-3 pt-3 border-t border-white/5 text-xs text-gray-400 flex justify-between">
+              <span>Sensor Signal: Turbidity surges rapidly</span>
+              <span class="text-emerald-400 font-semibold">pH drops; CO₂ spikes >2500 PPM</span>
             </div>
           </div>
 
           <!-- Phase 3 -->
-          <div class="step-card instrument-panel p-5 cursor-pointer" data-step="3">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center space-x-2.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase mono-font badge-stationary">Phase 03</span>
-                <h3 class="text-sm font-semibold text-slate-100">Stationary Phase (Carrying Capacity)</h3>
-              </div>
-              <span class="text-[11px] text-amber-400 mono-font"><i>dN</i>/<i>dt</i> → 0</span>
+          <div class="step-card glass-panel p-6" data-step="3">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 text-xs font-bold uppercase">Phase 3</span>
+              <h4 class="text-lg font-bold text-white">Stationary Phase (Peak Biomass)</h4>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Limiting carbon substrates approach exhaustion while metabolites accumulate. Cell division equals cell mortality, stabilizing turbidity near peak carrying capacity <i>K</i>.
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Nutrients in the broth become exhausted while inhibitory byproducts accumulate. Net division rate slows to zero ($\frac{dN}{dt} \approx 0$).
             </p>
-            <div class="mt-3 pt-2.5 border-t border-[#1e2733] text-[11px] text-slate-400 flex justify-between mono-font">
-              <span>Turbidity: Plateau (~790 NTU)</span>
-              <span class="text-amber-400 font-semibold">OPTIMAL HARVEST WINDOW</span>
+            <div class="mt-3 pt-3 border-t border-white/5 text-xs text-gray-400 flex justify-between">
+              <span>Sensor Signal: Turbidity plateau (~790 NTU)</span>
+              <span class="text-amber-400 font-bold">⚠️ HARVEST WINDOW ALERT</span>
             </div>
           </div>
 
           <!-- Phase 4 -->
-          <div class="step-card instrument-panel p-5 cursor-pointer" data-step="4">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center space-x-2.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase mono-font badge-death">Phase 04</span>
-                <h3 class="text-sm font-semibold text-slate-100">Decline / Death Phase (Autolysis)</h3>
-              </div>
-              <span class="text-[11px] text-red-400 mono-font"><i>dN</i>/<i>dt</i> &lt; 0</span>
+          <div class="step-card glass-panel p-6" data-step="4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="px-2.5 py-1 rounded bg-red-500/20 text-red-400 text-xs font-bold uppercase">Phase 4</span>
+              <h4 class="text-lg font-bold text-white">Death / Decline Phase</h4>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Nutrient depletion and toxic accumulation trigger irreversible cell lysis. Optical density drops and cellular respiration diminishes; late harvesting degrades yield purity.
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Without nutrient supplementation, autolysis and toxic byproduct buildup cause viable cells to die faster than new ones form. Harvesting late degrades quality.
             </p>
-            <div class="mt-3 pt-2.5 border-t border-[#1e2733] text-[11px] text-slate-400 flex justify-between mono-font">
-              <span>Turbidity: Declining slope</span>
-              <span class="text-red-400">Respiration ceases</span>
+            <div class="mt-3 pt-3 border-t border-white/5 text-xs text-gray-400 flex justify-between">
+              <span>Sensor Signal: Turbidity starts declining</span>
+              <span class="text-red-400 font-semibold">Respiration off-gas ceases</span>
             </div>
           </div>
 
         </div>
 
-        <!-- Right: Sticky Dynamic Phase Visualizer & Kinetic Formulation -->
-        <div class="lg:col-span-6 lg:sticky lg:top-24 instrument-panel p-6 space-y-5">
-          <div class="flex items-center justify-between border-b border-[#1e2733] pb-3">
-            <div>
-              <h3 class="text-sm font-semibold text-slate-100">Kinetic Regression Visualizer</h3>
-              <span id="svgActivePhaseTag" class="text-xs font-medium mono-font text-blue-400">Phase I: Lag Adaptation</span>
-            </div>
-            <span class="text-[11px] text-slate-500 mono-font">SIGMOIDAL ODE</span>
+        <!-- Right: Sticky Diagram & Equation Card -->
+        <div class="sticky top-28 glass-panel p-6 space-y-5">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h4 class="font-bold text-white text-sm">Mathematical Growth Modeling</h4>
+            <span class="text-xs text-emerald-400 font-mono">Logistic Sigmoid</span>
           </div>
 
-          <!-- Interactive SVG Curve Highlighted by Scrollytelling -->
-          <div class="bg-[#080b0f] border border-[#1e2733] rounded-lg p-4">
-            <svg class="w-full h-40" viewBox="0 0 360 155" fill="none">
-              <!-- Axes -->
-              <line x1="25" y1="15" x2="25" y2="140" stroke="#334155" stroke-width="1"/>
-              <line x1="25" y1="140" x2="345" y2="140" stroke="#334155" stroke-width="1"/>
-              <!-- Gridlines -->
-              <line x1="25" y1="32" x2="345" y2="32" stroke="#1e2733" stroke-dasharray="3 3"/>
-              <line x1="25" y1="84" x2="345" y2="84" stroke="#1e2733" stroke-dasharray="3 3"/>
-              <!-- Growth + Decline Curve -->
-              <path d="M 28 132 C 70 132, 95 128, 125 104 C 155 78, 175 40, 220 32 L 278 32 C 302 33, 320 46, 340 68" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- Phase Segments Overlay -->
-              <path d="M 28 132 C 55 132, 72 131, 86 128" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-              <path d="M 86 128 C 125 118, 165 44, 215 33" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
-              <path d="M 215 33 L 278 32" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
-              <path d="M 278 32 C 302 33, 320 46, 340 68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
-              <!-- Active Tracking Marker (Updated dynamically on scroll/click) -->
-              <circle id="svgPhaseHalo" cx="52" cy="132" r="10" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="2"/>
-              <circle id="svgPhaseMarker" cx="52" cy="132" r="4.5" fill="#3b82f6"/>
-            </svg>
-            <div class="flex justify-between text-[10px] text-slate-500 mono-font px-4 pt-1">
-              <span>Lag</span>
-              <span>Log Surge</span>
-              <span>Stationary (K)</span>
-              <span>Decline</span>
+          <!-- LaTeX Growth Equation Formula Container -->
+          <div class="bg-gray-900/90 p-4 rounded-xl border border-white/10 font-mono text-xs text-cyan-300 space-y-2">
+            <div class="text-gray-400 text-[11px]">Primary Growth Equation:</div>
+            <div class="text-sm font-bold text-white">
+              N(t) = N₀ + (K - N₀) / (1 + e^(-r(t - t₀)))
+            </div>
+            <div class="text-[11px] text-gray-400 pt-2 border-t border-white/10">
+              Where <strong>K</strong> = Carrying capacity (peak biomass), <strong>r</strong> = Growth rate, <strong>t₀</strong> = Midpoint inflection.
             </div>
           </div>
 
-          <!-- Formatted Mathematical Expressions -->
-          <div class="grid grid-cols-1 gap-3">
-            <div class="bg-[#151c26] p-3.5 rounded-lg border border-[#1e2733] space-y-1.5">
-              <div class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Logistic Biomass Model</div>
-              <div class="text-xs sm:text-sm font-semibold text-slate-100 mono-font">
-                N(t) = N<sub>0</sub> + (K &minus; N<sub>0</sub>) / (1 + e<sup>&minus;r(t &minus; t<sub>0</sub>)</sup>)
-              </div>
-              <div class="text-[11px] text-slate-400">
-                <strong class="text-slate-200">K</strong> = Carrying capacity, <strong class="text-slate-200">r</strong> = Intrinsic rate, <strong class="text-slate-200">t<sub>0</sub></strong> = Inflection time.
-              </div>
+          <div class="bg-gray-900/90 p-4 rounded-xl border border-white/10 font-mono text-xs text-amber-300 space-y-2">
+            <div class="text-gray-400 text-[11px]">Harvest Decision Derivative:</div>
+            <div class="text-sm font-bold text-white">
+              dN/dt = ΔTurbidity / Δt → 0.0 NTU/hr
             </div>
-
-            <div class="bg-[#151c26] p-3.5 rounded-lg border border-[#1e2733] space-y-1.5">
-              <div class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Harvest Trigger Criterion</div>
-              <div class="text-xs sm:text-sm font-semibold text-amber-400 mono-font">
-                dN/dt = &Delta;Turbidity / &Delta;t &rarr; 0.0 NTU/hr
-              </div>
-              <div class="text-[11px] text-slate-400">
-                When rate decelerates to plateau threshold post-inflection, the advisory locks onto optimal harvest window.
-              </div>
+            <div class="text-[11px] text-gray-400 pt-2 border-t border-white/10">
+              When the slope approaches zero after exponential acceleration, the system instantly notifies the operator: <strong>"Peak biomass reached. Collect sample now."</strong>
             </div>
           </div>
 
-          <a href="/research" class="btn-primary w-full py-2.5 rounded-lg text-center block text-xs">
-            Inspect Live Regression in Research Console
+          <a href="/research" class="btn-primary w-full py-3 rounded-xl text-center block text-xs">
+            Test Live Decision Engine in Studio →
           </a>
         </div>
 
       </div>
+
     </div>
   </section>
 
   <!-- ============================================================== -->
-  <!-- 5. INTERACTIVE BIOREACTOR VESSEL SANDBOX                       -->
+  <!-- 5. INTERACTIVE BIOPROCESS SCRUBBER SANDBOX -->
   <!-- ============================================================== -->
-  <section id="scrubber" class="py-20 bg-[#0b0f16] border-t border-[#1e2733] relative z-10">
+  <section id="scrubber" class="py-20 bg-[#090d19]/60 border-t border-white/5 relative z-10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       
-      <div class="text-center space-y-2 max-w-2xl mx-auto">
-        <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-400 mono-font">Interactive Calibration Sandbox</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-slate-100">Bioreactor Kinetic Scrubber</h2>
-        <p class="text-xs sm:text-sm text-slate-400">
-          Scrub along a simulated 10.5-hour fermentation timeline to inspect multi-sensor correlation and phase transitions.
+      <div class="text-center space-y-2">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Interactive Simulation Sandbox</span>
+        <h3 class="text-3xl font-extrabold text-white">Scrub Through A Culture Run</h3>
+        <p class="text-xs sm:text-sm text-gray-400">
+          Drag the time slider back and forth to observe how optical turbidity, broth pH, and off-gas emissions interact in real time.
         </p>
       </div>
 
-      <div class="instrument-panel p-6 sm:p-8 space-y-6">
+      <!-- Scrubber Widget Box -->
+      <div class="glass-panel p-6 sm:p-8 space-y-6">
         
-        <!-- Time Slider Control -->
+        <!-- Slider Control Bar -->
         <div class="space-y-3">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-semibold text-slate-300 uppercase tracking-wider mono-font">Incubation Elapsed Time</span>
-            <span id="scrubberTimeDisplay" class="font-bold text-emerald-400 text-sm mono-font">4.5 h (4h 30m)</span>
+            <span class="font-bold text-gray-300">INCUBATION TIME ELAPSED:</span>
+            <span id="scrubberTimeDisplay" class="font-extrabold text-emerald-400 text-base mono-font">4.5 Hours</span>
           </div>
           <input id="scrubberSlider" type="range" min="0.0" max="10.5" step="0.1" value="4.5">
-          <div class="flex justify-between text-[10px] text-slate-500 mono-font">
-            <span>0.0h · Inoculation</span>
-            <span>4.5h · Mid-Log</span>
-            <span>8.5h · Stationary</span>
-            <span>10.5h · Decline</span>
+          <div class="flex justify-between text-[11px] text-gray-500 mono-font">
+            <span>0.0h (Inoculation)</span>
+            <span>4.5h (Mid-Log)</span>
+            <span>8.5h (Stationary Peak)</span>
+            <span>10.5h (Death Phase)</span>
           </div>
         </div>
 
-        <!-- Vessel Diagram + Synchronized Telemetry Readouts -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pt-4 border-t border-[#1e2733]">
+        <!-- Animated Culture Vessel & Live Digital Meters Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pt-4">
           
-          <!-- Precision Stirred-Tank Vessel Graphic (4 cols) -->
-          <div class="md:col-span-4 text-center space-y-3">
-            <div class="vessel-wrapper">
-              <div class="vessel-headplate">
-                <div class="vessel-port" style="left: 23px;"></div>
-                <div class="vessel-port" style="left: 43px;"></div>
-                <div class="vessel-port" style="right: 22px; background: #0ea5e9;"></div>
-              </div>
-              <div class="flask-vessel">
-                <div class="vessel-probe-left" title="pH / Temperature Probe"></div>
-                <div class="vessel-probe-right" title="Optical Turbidity Sensor"></div>
-                <div class="vessel-ticks">
-                  <span></span><span></span><span></span><span></span><span></span>
-                </div>
-                <div id="flaskLiquid" class="flask-liquid">
-                  <div class="flask-bubbles"></div>
-                </div>
+          <!-- Virtual Culture Flask Graphic (4 cols) -->
+          <div class="md:col-span-4 text-center space-y-2">
+            <div class="flask-neck"></div>
+            <div class="flask-vessel">
+              <div id="flaskLiquid" class="flask-liquid">
+                <div class="flask-bubbles"></div>
               </div>
             </div>
-            <div class="text-[11px] text-slate-500 mono-font">VESSEL BROTH &amp; PROBE SCHEMATIC</div>
+            <div class="text-[11px] text-gray-400">Bioprocess Vessel Broth</div>
           </div>
 
-          <!-- Telemetry Readout Matrix (8 cols) -->
+          <!-- Live Digital Meters & Decision State (8 cols) -->
           <div class="md:col-span-8 space-y-4">
             
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <span class="text-xs text-slate-400 font-medium">Detected Kinetic Phase:</span>
-              <span id="scrubberPhasePill" class="px-3 py-1 rounded text-[11px] font-semibold uppercase tracking-wider mono-font badge-log">
-                PHASE II · LOG (EXPONENTIAL)
+            <div class="flex items-center space-x-3">
+              <span class="text-xs text-gray-400 font-semibold">Current State:</span>
+              <span id="scrubberPhasePill" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider badge-log">
+                LOG (EXPONENTIAL)
               </span>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div class="bg-[#151c26] p-3 rounded-lg border border-[#1e2733]">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider">Optical Turbidity</div>
-                <div id="scrubberTurbDisplay" class="text-base font-bold text-slate-100 mono-font mt-1">495.0 NTU</div>
+            <!-- 4 Meters -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="bg-gray-900/80 p-3 rounded-xl border border-white/5">
+                <div class="text-[10px] text-gray-400">Turbidity</div>
+                <div id="scrubberTurbDisplay" class="text-lg font-bold text-emerald-400 mono-font mt-1">495.0 NTU</div>
               </div>
-              <div class="bg-[#151c26] p-3 rounded-lg border border-[#1e2733]">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider">Rate (dN/dt)</div>
-                <div id="scrubberRateDisplay" class="text-base font-bold text-emerald-400 mono-font mt-1">+142.3 NTU/hr</div>
+              <div class="bg-gray-900/80 p-3 rounded-xl border border-white/5">
+                <div class="text-[10px] text-gray-400">Temperature</div>
+                <div id="scrubberTempDisplay" class="text-lg font-bold text-orange-400 mono-font mt-1">30.3 °C</div>
               </div>
-              <div class="bg-[#151c26] p-3 rounded-lg border border-[#1e2733]">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider">Temperature</div>
-                <div id="scrubberTempDisplay" class="text-base font-bold text-orange-400 mono-font mt-1">31.4 °C</div>
+              <div class="bg-gray-900/80 p-3 rounded-xl border border-white/5">
+                <div class="text-[10px] text-gray-400">pH Level</div>
+                <div id="scrubberPhDisplay" class="text-lg font-bold text-purple-400 mono-font mt-1">6.15</div>
               </div>
-              <div class="bg-[#151c26] p-3 rounded-lg border border-[#1e2733]">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider">Broth Acidity</div>
-                <div id="scrubberPhDisplay" class="text-base font-bold text-violet-400 mono-font mt-1">6.17</div>
-              </div>
-              <div class="bg-[#151c26] p-3 rounded-lg border border-[#1e2733] col-span-2">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider">Headspace CO<sub>2</sub> Concentration</div>
-                <div id="scrubberGasDisplay" class="text-base font-bold text-cyan-400 mono-font mt-1">1,820 PPM</div>
+              <div class="bg-gray-900/80 p-3 rounded-xl border border-white/5">
+                <div class="text-[10px] text-gray-400">Headspace Gas</div>
+                <div id="scrubberGasDisplay" class="text-lg font-bold text-cyan-400 mono-font mt-1">2100 PPM</div>
               </div>
             </div>
 
-            <!-- Decision Output -->
-            <div class="p-3.5 rounded-lg border border-[#1e2733] bg-[#080b0f] text-xs space-y-1">
-              <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mono-font">Control System Directive</div>
-              <p id="scrubberRecoDisplay" class="text-slate-300 leading-relaxed">
-                Balanced exponential binary fission active. Turbidity and CO<sub>2</sub> rising rapidly.
+            <!-- Dynamic Recommendation Box -->
+            <div class="p-4 rounded-xl border border-white/10 bg-gray-900/60 text-xs">
+              <div class="font-bold text-gray-300 mb-1">Decision Engine Action:</div>
+              <p id="scrubberRecoDisplay" class="text-gray-400 leading-relaxed">
+                Rapid cellular division active. Turbidity & CO₂ soaring. Maintain aeration and incubation temperature.
               </p>
             </div>
 
           </div>
+
         </div>
 
       </div>
+
     </div>
   </section>
 
   <!-- ============================================================== -->
-  <!-- 6. HARDWARE INSTRUMENTATION & PINOUT DATASHEET                 -->
+  <!-- 6. HARDWARE & SENSOR PINOUT SPECIFICATIONS -->
   <!-- ============================================================== -->
   <section id="hardware" class="py-20 relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       
-      <div class="max-w-2xl space-y-2">
-        <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-400 mono-font">Instrumentation Stack</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-slate-100">Sensor Hardware &amp; ESP32 Pinout</h2>
-        <p class="text-sm text-slate-400">
-          Four independent submerged and headspace sensing channels wired to high-resolution ADC1 and digital OneWire pins.
+      <div class="text-center space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400">Embedded IoT Architecture</h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Hardware & Sensor Stack</h3>
+        <p class="text-sm text-gray-400 max-w-2xl mx-auto">
+          Every physical parameter corresponds to a dedicated submerged or headspace sensor wired to the ESP32.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
-        <!-- Channel 1 -->
-        <div class="instrument-panel p-5 space-y-3 border-t-2 border-t-emerald-500">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-emerald-400">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/>
-              </svg>
-            </span>
-            <span class="px-2 py-0.5 rounded bg-[#151c26] border border-[#263140] text-[10px] text-emerald-400 mono-font">GPIO 34 · ADC1</span>
-          </div>
-          <h3 class="text-sm font-semibold text-slate-100">Optical Turbidity Probe</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Infrared phototransistor measuring suspended biomass light attenuation in Nephelometric Turbidity Units (NTU). Primary proxy for cell count <i>N</i>(<i>t</i>).
+        <!-- Sensor 1 -->
+        <div class="glass-panel p-6 space-y-3">
+          <div class="text-3xl">🟢</div>
+          <h4 class="text-base font-bold text-white">Optical Turbidity Sensor</h4>
+          <div class="text-xs text-emerald-400 font-semibold mono-font">Pin: GPIO 34 (ADC1)</div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Measures scattered light transmittance (NTU/OD). As cells multiply, broth cloudiness increases, serving as our primary biomass density proxy.
           </p>
         </div>
 
-        <!-- Channel 2 -->
-        <div class="instrument-panel p-5 space-y-3 border-t-2 border-t-orange-500">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-orange-400">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
-              </svg>
-            </span>
-            <span class="px-2 py-0.5 rounded bg-[#151c26] border border-[#263140] text-[10px] text-orange-400 mono-font">GPIO 04 · OneWire</span>
-          </div>
-          <h3 class="text-sm font-semibold text-slate-100">DS18B20 Thermal Sensor</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Submersible digital probe (4.7 k&Omega; pull-up) tracking incubator thermal drift and exothermic heat output during peak logarithmic fermentation.
+        <!-- Sensor 2 -->
+        <div class="glass-panel p-6 space-y-3">
+          <div class="text-3xl">🌡️</div>
+          <h4 class="text-base font-bold text-white">DS18B20 Temp Probe</h4>
+          <div class="text-xs text-orange-400 font-semibold mono-font">Pin: GPIO 4 (OneWire)</div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Waterproof digital temperature sensor with 4.7kΩ pull-up resistor. Tracks incubator stability and thermal spikes from exothermic cellular respiration.
           </p>
         </div>
 
-        <!-- Channel 3 -->
-        <div class="instrument-panel p-5 space-y-3 border-t-2 border-t-violet-500">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-violet-400">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
-              </svg>
-            </span>
-            <span class="px-2 py-0.5 rounded bg-[#151c26] border border-[#263140] text-[10px] text-violet-400 mono-font">GPIO 35 · ADC1</span>
-          </div>
-          <h3 class="text-sm font-semibold text-slate-100">Analog Glass pH Electrode</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Monitors hydronium ion concentration (0–14 pH). Acidification shifts from 7.1 toward 5.4 validate metabolic organic acid synthesis.
+        <!-- Sensor 3 -->
+        <div class="glass-panel p-6 space-y-3">
+          <div class="text-3xl">🧪</div>
+          <h4 class="text-base font-bold text-white">Analog pH Electrode</h4>
+          <div class="text-xs text-purple-400 font-semibold mono-font">Pin: GPIO 35 (ADC1)</div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Glass bulb electrode detecting hydronium concentration. Fermentative production of organic acids drops pH from ~7.1 to ~5.4, indicating vitality.
           </p>
         </div>
 
-        <!-- Channel 4 -->
-        <div class="instrument-panel p-5 space-y-3 border-t-2 border-t-cyan-500">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-cyan-400">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
-              </svg>
-            </span>
-            <span class="px-2 py-0.5 rounded bg-[#151c26] border border-[#263140] text-[10px] text-cyan-400 mono-font">GPIO 32 · ADC1</span>
-          </div>
-          <h3 class="text-sm font-semibold text-slate-100">MQ-135 Headspace Gas</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Measures reactor headspace CO<sub>2</sub> and volatile respiration gases in PPM, providing orthogonal confirmation of growth saturation.
+        <!-- Sensor 4 -->
+        <div class="glass-panel p-6 space-y-3">
+          <div class="text-3xl">💨</div>
+          <h4 class="text-base font-bold text-white">MQ-135 Gas Sensor</h4>
+          <div class="text-xs text-cyan-400 font-semibold mono-font">Pin: GPIO 32 (ADC1)</div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Headspace gas sensor tracking carbon dioxide ($CO_2$) and volatile off-gases in PPM. Independent metabolic confirmation of respiration plateau.
           </p>
         </div>
 
       </div>
+
     </div>
   </section>
 
   <!-- ============================================================== -->
-  <!-- 7. FOOTER & CONSOLE LAUNCH                                     -->
+  <!-- 7. BOTTOM CALL TO ACTION & FOOTER -->
   <!-- ============================================================== -->
-  <section class="py-16 border-t border-[#1e2733] bg-[#0b0f16] relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="space-y-1.5 text-center md:text-left">
-        <h2 class="text-xl sm:text-2xl font-bold text-slate-100">Ready to monitor an active culture vessel?</h2>
-        <p class="text-xs sm:text-sm text-slate-400">
-          Launch the Research Console to start batches, inspect live telemetry traces, and audit historical fermentations.
-        </p>
+  <section class="py-20 border-t border-white/10 bg-gradient-to-b from-[#0a0f1d] to-[#070a11] relative z-10 text-center">
+    <div class="max-w-4xl mx-auto px-4 space-y-6">
+      <h3 class="text-3xl sm:text-5xl font-black text-white">
+        Ready to Monitor Your Live Reaction?
+      </h3>
+      <p class="text-sm text-gray-400 max-w-xl mx-auto">
+        Step inside the Research Studio to start new reaction batches, connect Supabase, view live telemetry streams, and inspect past experiment records.
+      </p>
+      <div class="pt-2">
+        <a href="/research" class="btn-primary px-9 py-4 rounded-2xl text-sm font-bold shadow-2xl shadow-emerald-500/30 inline-flex items-center space-x-2">
+          <span>Enter Research Studio Now</span>
+          <span>→</span>
+        </a>
       </div>
-      <a href="/research" class="btn-primary px-6 py-3 rounded-lg text-xs inline-flex items-center space-x-2 shrink-0">
-        <span>Open Research Console</span>
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
-      </a>
     </div>
   </section>
 
-  <footer class="py-6 border-t border-[#1e2733] text-center text-[11px] text-slate-500 mono-font">
-    AICTE IDEA LAB 1ST SEMESTER PROJECT · BIOPROCESS TELEMETRY &amp; GROWTH PREDICTION SYSTEM
+  <footer class="py-8 border-t border-white/5 text-center text-xs text-gray-500">
+    AICTE IDEA Lab 1st Semester Student Group Project • IoT-Based Bioprocess Monitoring & Growth Prediction System
   </footer>
 
+  <!-- Landing Page Interactivity Script -->
   <script src="js/landing.js"></script>
 </body>
 </html>
