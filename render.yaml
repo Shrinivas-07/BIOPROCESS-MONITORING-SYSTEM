@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: bioprocess-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn wsgi:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_TABLE
+        value: bioprocess_readings
+      - key: SUPABASE_BATCHES_TABLE
+        value: bioprocess_batches
+      - key: AUTO_SIMULATION
+        value: "true"
+
